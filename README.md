@@ -1,4 +1,4 @@
-# healtnest_app
+# healthnest_app
 
 A new Flutter project.
 
