@@ -1,0 +1,213 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_stack" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary": "#1C27D6", "primary-dark": "#151D9E", "primary-soft": "#EEF0FF", "card-bg": "#FFFFFF", "border-color": "#E2E8F0", "text-main": "#0F172A", "text-muted": "#475569", "page-bg": "#F7F8FC" }, fontFamily: { "headline": ["Manrope", "sans-serif"], "body": ["Public Sans", "sans-serif"] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-page-bg font-body text-text-main antialiased flex flex-col justify-center items-center min-h-screen p-4 sm:p-6" style="background-color: rgb(230, 234, 244);"><main class="w-full max-w-md mx-auto my-auto flex flex-col items-center justify-center">
+<!-- Clean Modal Container -->
+<div class="w-full bg-card-bg rounded-2xl border border-border-color shadow-sm p-6 sm:p-7 flex flex-col gap-6" style="background-color: rgb(250, 251, 253); border-color: rgb(213, 220, 235); box-shadow: rgba(28, 39, 214, 0.05) 0px 10px 25px -5px, rgba(0, 0, 0, 0.04) 0px 8px 10px -6px;">
+<!-- Header & Progress -->
+<div class="flex flex-col gap-3">
+<div class="flex items-baseline justify-between">
+<h1 class="font-headline text-2xl font-bold text-text-main">Quick check-in</h1>
+<span class="font-body text-sm font-semibold text-primary" id="step-counter">1 of 3 answered</span>
+</div>
+<!-- 3-Segment Progress Bar -->
+<div aria-valuemax="3" aria-valuemin="0" aria-valuenow="1" class="grid grid-cols-3 gap-2" role="progressbar">
+<div class="h-1.5 rounded-full bg-primary transition-colors duration-300" id="bar-1"></div>
+<div class="h-1.5 rounded-full bg-border-color transition-colors duration-300" id="bar-2" style="background-color: rgb(213, 220, 235);"></div>
+<div class="h-1.5 rounded-full bg-border-color transition-colors duration-300" id="bar-3" style="background-color: rgb(213, 220, 235);"></div>
+</div>
+</div>
+<!-- Form Content -->
+<form class="flex flex-col gap-6" id="checkin-form" onsubmit="event.preventDefault();">
+<!-- Question 1: How are you feeling? -->
+<fieldset class="flex flex-col gap-2.5">
+<legend class="font-headline text-base text-text-main font-semibold flex items-center justify-between w-full">
+<span class="">1. How are you feeling?</span>
+<span class="material-symbols-outlined text-[20px] text-text-muted">sentiment_satisfied</span>
+</legend>
+<div aria-label="How are you feeling" class="grid grid-cols-3 gap-2.5" role="radiogroup">
+<!-- Option: Fine -->
+<button class="q-btn group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border border-border-color bg-page-bg text-text-main active:scale-95 transition-all" data-q="1" data-val="fine" type="button" style="background-color: rgb(241, 244, 250); border-color: rgb(213, 220, 235);">
+<span class="material-symbols-outlined text-[26px] text-text-muted transition-colors">thumb_up</span>
+<span class="font-body text-sm font-medium mt-1">Fine</span>
+</button>
+<!-- Option: Tired (Default selected) -->
+<button aria-checked="true" class="q-btn active-state group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border-2 border-primary bg-primary-soft text-primary active:scale-95 transition-all" data-q="1" data-val="tired" type="button">
+<span class="material-symbols-outlined text-[26px] text-primary" style="font-variation-settings: 'FILL' 1;">battery_low</span>
+<span class="font-body text-sm font-bold mt-1">Tired</span>
+</button>
+<!-- Option: Unwell -->
+<button class="q-btn group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border border-border-color bg-page-bg text-text-main active:scale-95 transition-all" data-q="1" data-val="unwell" type="button" style="background-color: rgb(241, 244, 250); border-color: rgb(213, 220, 235);">
+<span class="material-symbols-outlined text-[26px] text-text-muted transition-colors">sick</span>
+<span class="font-body text-sm font-medium mt-1">Unwell</span>
+</button>
+</div>
+</fieldset>
+<!-- Question 2: Pain or Discomfort -->
+<fieldset class="flex flex-col gap-2.5">
+<legend class="font-headline text-base text-text-main font-semibold flex items-center justify-between w-full">
+<span class="">2. Any pain or discomfort?</span>
+<span class="material-symbols-outlined text-[20px] text-text-muted">healing</span>
+</legend>
+<div aria-label="Pain or discomfort level" class="grid grid-cols-3 gap-2.5" role="radiogroup">
+<!-- Option: No -->
+<button class="q-btn group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border border-border-color bg-page-bg text-text-main active:scale-95 transition-all" data-q="2" data-val="no" type="button" style="background-color: rgb(241, 244, 250); border-color: rgb(213, 220, 235);">
+<span class="material-symbols-outlined text-[26px] text-text-muted transition-colors">check_circle</span>
+<span class="font-body text-sm font-medium mt-1">No</span>
+</button>
+<!-- Option: Mild -->
+<button class="q-btn group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border border-border-color bg-page-bg text-text-main active:scale-95 transition-all" data-q="2" data-val="mild" type="button" style="background-color: rgb(241, 244, 250); border-color: rgb(213, 220, 235);">
+<span class="material-symbols-outlined text-[26px] text-text-muted transition-colors">notification_important</span>
+<span class="font-body text-sm font-medium mt-1">Mild</span>
+</button>
+<!-- Option: Severe -->
+<button class="q-btn group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border border-border-color bg-page-bg text-text-main active:scale-95 transition-all" data-q="2" data-val="severe" type="button" style="background-color: rgb(241, 244, 250); border-color: rgb(213, 220, 235);">
+<span class="material-symbols-outlined text-[26px] text-text-muted transition-colors">warning</span>
+<span class="font-body text-sm font-medium mt-1">Severe</span>
+</button>
+</div>
+</fieldset>
+<!-- Question 3: Stress Level -->
+<fieldset class="flex flex-col gap-2.5">
+<legend class="font-headline text-base text-text-main font-semibold flex items-center justify-between w-full">
+<span class="">3. Your stress level?</span>
+<span class="material-symbols-outlined text-[20px] text-text-muted">psychology</span>
+</legend>
+<div aria-label="Stress level" class="grid grid-cols-3 gap-2.5" role="radiogroup">
+<!-- Option: Low -->
+<button class="q-btn group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border border-border-color bg-page-bg text-text-main active:scale-95 transition-all" data-q="3" data-val="low" type="button" style="background-color: rgb(241, 244, 250); border-color: rgb(213, 220, 235);">
+<span class="material-symbols-outlined text-[26px] text-text-muted transition-colors">spa</span>
+<span class="font-body text-sm font-medium mt-1">Low</span>
+</button>
+<!-- Option: Medium -->
+<button class="q-btn group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border border-border-color bg-page-bg text-text-main active:scale-95 transition-all" data-q="3" data-val="med" type="button" style="background-color: rgb(241, 244, 250); border-color: rgb(213, 220, 235);">
+<span class="material-symbols-outlined text-[26px] text-text-muted transition-colors">waves</span>
+<span class="font-body text-sm font-medium mt-1">Medium</span>
+</button>
+<!-- Option: High -->
+<button class="q-btn group flex flex-col items-center justify-center min-h-[72px] p-2 rounded-xl border border-border-color bg-page-bg text-text-main active:scale-95 transition-all" data-q="3" data-val="high" type="button" style="background-color: rgb(241, 244, 250); border-color: rgb(213, 220, 235);">
+<span class="material-symbols-outlined text-[26px] text-text-muted transition-colors">local_fire_department</span>
+<span class="font-body text-sm font-medium mt-1">High</span>
+</button>
+</div>
+</fieldset>
+<!-- Action Controls -->
+<div class="flex flex-col gap-3 pt-2">
+<!-- Primary Submit Button -->
+<button class="w-full min-h-[52px] rounded-xl bg-primary text-white font-body text-base font-bold flex items-center justify-center gap-2 hover:bg-primary-dark active:scale-[0.99] transition-all shadow-sm" id="submit-btn" type="submit">
+<span class="material-symbols-outlined text-[22px]">task_alt</span>
+<span class="">Submit</span>
+</button>
+<!-- Skip Text Link -->
+<button class="w-full py-2 font-body text-sm font-semibold text-text-muted hover:text-text-main active:opacity-70 transition-colors text-center" onclick="if(window.history.length &gt; 1){history.back();}" type="button">
+        Skip for now
+      </button>
+</div>
+</form>
+</div>
+</main>
+<script>
+  (function initCheckinInteractions() {
+    const questions = {
+      1: 'tired',
+      2: null,
+      3: null
+    };
+
+    const buttons = document.querySelectorAll('.q-btn');
+    const stepCounter = document.getElementById('step-counter');
+    const bars = {
+      1: document.getElementById('bar-1'),
+      2: document.getElementById('bar-2'),
+      3: document.getElementById('bar-3')
+    };
+
+    function updateStateUI() {
+      const answeredCount = Object.values(questions).filter(Boolean).length;
+      if (stepCounter) {
+        stepCounter.textContent = `${answeredCount} of 3 answered`;
+      }
+
+      [1, 2, 3].forEach(step => {
+        const bar = bars[step];
+        if (!bar) return;
+        if (questions[step]) {
+          bar.className = 'h-1.5 rounded-full bg-primary transition-colors duration-300';
+        } else {
+          bar.className = 'h-1.5 rounded-full bg-border-color transition-colors duration-300';
+        }
+      });
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qIndex = btn.getAttribute('data-q');
+        const val = btn.getAttribute('data-val');
+        
+        // Reset siblings in this question group
+        const groupBtns = document.querySelectorAll(`.q-btn[data-q="${qIndex}"]`);
+        groupBtns.forEach(b => {
+          b.removeAttribute('aria-checked');
+          b.classList.remove('border-2', 'border-primary', 'bg-primary-soft', 'text-primary', 'active-state');
+          b.classList.add('border', 'border-border-color', 'bg-page-bg', 'text-text-main');
+          
+          const icon = b.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.style.fontVariationSettings = "'FILL' 0";
+            icon.classList.remove('text-primary');
+            icon.classList.add('text-text-muted');
+          }
+          const text = b.querySelector('span:not(.material-symbols-outlined)');
+          if (text) {
+            text.classList.remove('font-bold');
+            text.classList.add('font-medium');
+          }
+        });
+
+        // Set active selected styles on tapped button
+        btn.setAttribute('aria-checked', 'true');
+        btn.classList.remove('border', 'border-border-color', 'bg-page-bg', 'text-text-main');
+        btn.classList.add('border-2', 'border-primary', 'bg-primary-soft', 'text-primary', 'active-state');
+        
+        const activeIcon = btn.querySelector('.material-symbols-outlined');
+        if (activeIcon) {
+          activeIcon.style.fontVariationSettings = "'FILL' 1";
+          activeIcon.classList.remove('text-text-muted');
+          activeIcon.classList.add('text-primary');
+        }
+        const activeText = btn.querySelector('span:not(.material-symbols-outlined)');
+        if (activeText) {
+          activeText.classList.remove('font-medium');
+          activeText.classList.add('font-bold');
+        }
+
+        questions[qIndex] = val;
+        updateStateUI();
+      });
+    });
+
+    const submitBtn = document.getElementById('submit-btn');
+    if (submitBtn) {
+      submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        submitBtn.innerHTML = '<span class="material-symbols-outlined text-[22px] animate-spin">progress_activity</span><span>Submitting...</span>';
+        setTimeout(() => {
+          submitBtn.className = 'w-full min-h-[52px] rounded-xl bg-primary text-white font-body text-base font-bold flex items-center justify-center gap-2 transition-all shadow-sm';
+          submitBtn.innerHTML = '<span class="material-symbols-outlined text-[22px]">check_circle</span><span>Check-in Submitted!</span>';
+          setTimeout(() => {
+            if (window.history.length > 1) {
+              window.history.back();
+            }
+          }, 800);
+        }, 600);
+      });
+    }
+
+    updateStateUI();
+  })();
+</script>
+
+</body></html>

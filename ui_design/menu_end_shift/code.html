@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Public+Sans:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#1C27D6",
+        "primary-dark": "#151D9E",
+        "primary-soft": "#EEF0FF",
+        "surface-base": "#EDF0F7",
+        "card-border": "#D5DCEB",
+        "card-border-light": "#E2E8F0",
+        "text-main": "#0F172A",
+        "text-muted": "#475569",
+        "text-subtle": "#94A3B8",
+        "danger-soft": "#FEE2E2",
+        "danger-text": "#B91C1C",
+        "danger-border": "#FECACA"
+      },
+      borderRadius: {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "2xl": "1rem",
+        "full": "9999px"
+      },
+      spacing: {
+        "space-xl": "2rem",
+        "space-sm": "0.75rem",
+        "space-md": "1rem",
+        "gutter": "1rem",
+        "space-xs": "0.5rem",
+        "margin": "1.25rem",
+        "space-lg": "1.5rem"
+      },
+      fontFamily: {
+        "headline-xl": ["Manrope"],
+        "headline-lg": ["Manrope"],
+        "headline-md": ["Manrope"],
+        "body-md": ["Hanken Grotesk", "Public Sans"],
+        "body-lg": ["Hanken Grotesk", "Public Sans"],
+        "label-lg": ["Hanken Grotesk", "Public Sans"],
+        "label-md": ["Hanken Grotesk", "Public Sans"]
+      }
+    }
+  }
+};</script></head><body class="bg-[#EDF0F7] font-body-md text-[#0F172A] antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-[#EDF0F7]/90 backdrop-blur-xl border-b border-[#D5DCEB]/70"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-[#1C27D6] flex items-center justify-center text-white shadow-sm"><span class="material-symbols-outlined text-[20px]">health_metrics</span></div><span class="font-headline-md text-[20px] font-bold tracking-tight text-[#0F172A]">HealthNest</span><span class="font-label-md text-[13px] text-[#475569] font-medium ml-1 hidden sm:inline">| Menu</span></div><div class="w-9 h-9 rounded-full bg-[#EEF0FF] border border-[#D5DCEB] flex items-center justify-center shrink-0 text-[#1C27D6]"><span class="material-symbols-outlined text-[20px]">person</span></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-[#EDF0F7] min-h-screen"><div class="flex flex-col w-full px-margin pb-6 gap-space-lg">
+<!-- Profile & Station Context Card -->
+<section class="bg-white rounded-xl p-space-md border border-[#D5DCEB] shadow-sm flex items-center justify-between mt-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="relative w-14 h-14 rounded-full overflow-hidden bg-[#EEF0FF] flex items-center justify-center shrink-0 border border-[#D5DCEB]">
+<img class="w-full h-full object-cover" data-alt="Portrait of an industrial assembly technician wearing high-visibility collar and subtle safety glasses, friendly expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6qYGv8T6oPJKE4dIpxZjE1masgj53MY7K7GXbX7Zzmnf44ZM-zH-KTft790zB-4pTH5mf-6Yy3Luiu2WPsGk50sAbOGGYlyksASL82toeKFuH2x-88Ef8SLX_DxI5jgWvER2C7-QP-eLgXxHQ-mkGhgA4ffJKlNjpgMccebjkoyY39wKa-3hnWxaK0O5sZ7V8a0VyQsyaNBGwtDE2GhSxDlf_NFfYqPYtHMMLlAf3lYXs-kKnKerC5A"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-[18px] font-bold text-[#0F172A]">Operator #418</span>
+</div>
+<span class="font-label-md text-[13px] text-[#475569] font-medium">Assembly Line 3 • Station B</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="bg-[#EEF0FF] text-[#1C27D6] border border-[#1C27D6]/20 font-label-md text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Active</span>
+</div>
+</section>
+<!-- Shift Management Focal Card -->
+<section class="bg-white rounded-xl p-space-md border border-[#D5DCEB] shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs text-[#0F172A]">
+<span class="material-symbols-outlined text-[#1C27D6] text-[22px]">timer</span>
+<span class="font-label-lg text-[15px] font-bold">Current Shift Status</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EEF0FF] text-[#1C27D6] text-[13px] font-bold border border-[#1C27D6]/20">
+<span class="w-2 h-2 rounded-full bg-[#1C27D6] animate-pulse"></span>
+<span>6h 12m</span>
+</div>
+</div>
+<!-- Active Shift Timing Strip -->
+<div class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-space-sm flex items-center justify-between text-[#475569]">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-[#1C27D6]">schedule</span>
+<span class="font-body-md text-[14px]">Shift active since <strong class="text-[#0F172A] font-semibold">8:04 AM</strong></span>
+</div>
+<span class="font-label-md text-[12px] text-[#64748B] font-medium">Target: 4:30 PM</span>
+</div>
+<!-- End Shift CTA Button Trigger -->
+<button class="w-full min-h-[52px] h-[52px] rounded-xl bg-[#FEE2E2] text-[#B91C1C] border border-[#FECACA] font-label-lg text-[15px] font-bold flex items-center justify-center gap-space-xs active:bg-[#FCA5A5] transition-colors shadow-sm cursor-pointer select-none" id="open-end-shift-modal" type="button">
+<span class="material-symbols-outlined text-[22px]">stop_circle</span>
+<span>End Shift</span>
+</button>
+</section>
+<!-- Menu Action List -->
+<section class="flex flex-col gap-space-xs">
+<span class="font-label-md text-[12px] font-bold text-[#64748B] px-1 uppercase tracking-wider">Quick Actions</span>
+<div class="flex flex-col gap-2.5">
+<!-- 1. Start Check-in -->
+<button class="w-full min-h-[64px] bg-white rounded-xl p-space-md border border-[#D5DCEB] flex items-center justify-between text-left shadow-sm active:bg-[#F8FAFC] transition-colors group" type="button">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-[#EEF0FF] flex items-center justify-center text-[#1C27D6] shrink-0 border border-[#D5DCEB]">
+<span class="material-symbols-outlined text-[26px]">fact_check</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-[16px] font-bold text-[#0F172A] leading-tight">Start check-in</span>
+<span class="font-body-md text-[13px] text-[#475569] leading-normal">On-demand fatigue &amp; wellness survey</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[#94A3B8] text-[22px] shrink-0">chevron_right</span>
+</button>
+<!-- 2. Wristband Status -->
+<button class="w-full min-h-[64px] bg-white rounded-xl p-space-md border border-[#D5DCEB] flex items-center justify-between text-left shadow-sm active:bg-[#F8FAFC] transition-colors group" type="button">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-[#EEF0FF] flex items-center justify-center text-[#1C27D6] shrink-0 border border-[#D5DCEB]">
+<span class="material-symbols-outlined text-[26px]">watch</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-[16px] font-bold text-[#0F172A] leading-tight">Wristband status</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-[#1C27D6]"></span>
+<span class="font-body-md text-[13px] text-[#475569] font-medium">Connected • Battery 85%</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="material-symbols-outlined text-[#1C27D6] text-[20px]">bluetooth_connected</span>
+<span class="material-symbols-outlined text-[#94A3B8] text-[22px]">chevron_right</span>
+</div>
+</button>
+<!-- 3. Workstation Guidelines -->
+<button class="w-full min-h-[64px] bg-white rounded-xl p-space-md border border-[#D5DCEB] flex items-center justify-between text-left shadow-sm active:bg-[#F8FAFC] transition-colors group" type="button">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-[#EEF0FF] flex items-center justify-center text-[#1C27D6] shrink-0 border border-[#D5DCEB]">
+<span class="material-symbols-outlined text-[26px]">health_and_safety</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-[16px] font-bold text-[#0F172A] leading-tight">Hydration &amp; Ergonomics</span>
+<span class="font-body-md text-[13px] text-[#475569] leading-normal">Line 3 shift standards &amp; safety guide</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[#94A3B8] text-[22px] shrink-0">chevron_right</span>
+</button>
+<!-- 4. Log out -->
+<button class="w-full min-h-[64px] bg-white rounded-xl p-space-md border border-[#D5DCEB] flex items-center justify-between text-left shadow-sm active:bg-[#F8FAFC] transition-colors group" type="button">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-[#F1F5F9] flex items-center justify-center text-[#64748B] shrink-0 border border-[#E2E8F0]">
+<span class="material-symbols-outlined text-[26px]">logout</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-[16px] font-bold text-[#64748B] leading-tight">Log out</span>
+<span class="font-body-md text-[13px] text-[#94A3B8] leading-normal">Switch user or lock workstation</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[#94A3B8] text-[22px] shrink-0">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Live Plant Safety Banner -->
+<section class="bg-[#EEF0FF] rounded-xl p-space-md border border-[#1C27D6]/20 flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1C27D6] shrink-0 shadow-sm border border-[#D5DCEB]">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-[14px] font-bold text-[#0F172A]">Factory Shift Safeguard Active</span>
+<span class="font-body-md text-[13px] text-[#475569] leading-tight">Automatic supervisor notify is set for severe heat and pulse flags.</span>
+</div>
+</section>
+<!-- Footer Information -->
+<footer class="flex flex-col items-center justify-center text-center gap-1.5 pt-2 pb-6">
+<div class="flex items-center gap-2 text-[#475569]">
+<span class="font-label-md text-[13px] font-semibold">HealthNest Version 1.2.0 (Build 44)</span>
+</div>
+<p class="font-body-md text-[12px] text-[#64748B] max-w-xs leading-relaxed">
+      This is a wellness tool, not a medical diagnosis. Report immediate emergencies to the plant first-aid desk.
+    </p>
+</footer>
+<!-- End Shift Confirmation Dialog Overlay (Modal) -->
+<div aria-labelledby="modal-title" aria-modal="true" class="fixed inset-0 z-50 flex items-end justify-center sm:items-center p-0 sm:p-margin bg-[#0F172A]/60 backdrop-blur-sm transition-opacity duration-200 hidden opacity-0" id="end-shift-modal" role="dialog">
+<div class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl p-space-lg flex flex-col gap-space-lg shadow-2xl border border-[#D5DCEB]">
+<!-- Warning Badge Header -->
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-full bg-[#FEE2E2] border border-[#FECACA] flex items-center justify-center text-[#B91C1C] shrink-0">
+<span class="material-symbols-outlined text-[28px]">report</span>
+</div>
+<div class="flex flex-col gap-1">
+<h2 class="font-headline-md text-[20px] font-bold text-[#0F172A] leading-tight" id="modal-title">End shift?</h2>
+<p class="font-body-md text-[14px] text-[#475569] leading-relaxed">
+            Are you sure you want to end your shift? Continuous biometric telemetry tracking will be finalized and sent to line dispatch.
+          </p>
+</div>
+</div>
+<!-- Quick Shift Summary Micro-Card -->
+<div class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-space-sm flex items-center justify-around text-center">
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-[#64748B] font-bold uppercase tracking-wider">Duration</span>
+<span class="font-headline-md text-[18px] font-bold text-[#0F172A]">6h 12m</span>
+</div>
+<div class="w-px h-8 bg-[#D5DCEB]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-[#64748B] font-bold uppercase tracking-wider">Vitals Logged</span>
+<span class="font-headline-md text-[18px] font-bold text-[#1C27D6]">100%</span>
+</div>
+<div class="w-px h-8 bg-[#D5DCEB]"></div>
+<div class="flex flex-col">
+<span class="font-label-md text-[11px] text-[#64748B] font-bold uppercase tracking-wider">Breaks Logged</span>
+<span class="font-headline-md text-[18px] font-bold text-[#0F172A]">2</span>
+</div>
+</div>
+<!-- Dialog Buttons -->
+<div class="flex flex-col gap-space-sm pt-1">
+<!-- Confirm End Shift -->
+<button class="w-full min-h-[52px] h-[52px] rounded-xl bg-[#B91C1C] text-white font-label-lg text-[15px] font-bold flex items-center justify-center gap-space-xs active:bg-[#991B1B] transition-colors shadow-sm select-none cursor-pointer" id="confirm-end-shift-btn" type="button">
+<span class="material-symbols-outlined text-[22px]">check_circle</span>
+<span>End shift</span>
+</button>
+<!-- Cancel / Resume -->
+<button class="w-full min-h-[52px] h-[52px] rounded-xl bg-[#F1F5F9] text-[#0F172A] border border-[#D5DCEB] font-label-lg text-[15px] font-semibold flex items-center justify-center gap-space-xs active:bg-[#E2E8F0] transition-colors select-none cursor-pointer" id="cancel-end-shift-btn" type="button">
+<span>Cancel</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const modal = document.getElementById('end-shift-modal');
+    const openBtn = document.getElementById('open-end-shift-modal');
+    const cancelBtn = document.getElementById('cancel-end-shift-btn');
+    const confirmBtn = document.getElementById('confirm-end-shift-btn');
+
+    function showModal() {
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+      });
+    }
+
+    function hideModal() {
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
+    }
+
+    if (openBtn) {
+      openBtn.addEventListener('click', showModal);
+    }
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', hideModal);
+    }
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', () => {
+        confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Ending shift...</span>';
+        setTimeout(() => {
+          hideModal();
+          confirmBtn.innerHTML = '<span class="material-symbols-outlined text-[22px]">check_circle</span><span>End shift</span>';
+          if (openBtn) {
+            openBtn.innerHTML = '<span class="material-symbols-outlined text-[22px]">check</span><span>Shift Ended at ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + '</span>';
+            openBtn.className = 'w-full min-h-[52px] h-[52px] rounded-xl bg-[#E2E8F0] text-[#64748B] border border-[#CBD5E1] font-label-lg text-[15px] flex items-center justify-center gap-space-xs cursor-default';
+            openBtn.disabled = true;
+          }
+        }, 800);
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          hideModal();
+        }
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-white/95 backdrop-blur-xl border-t border-[#D5DCEB] shadow-[0_-2px_10px_rgba(15,23,42,0.04)]"><div class="grid grid-cols-4 h-16 max-w-md mx-auto items-center px-space-xs"><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-[#64748B] hover:text-[#0F172A] transition-colors" data-path="home" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="font-label-md text-[13px] font-medium leading-tight mt-0.5">Home</span></a><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-[#64748B] hover:text-[#0F172A] transition-colors" data-path="band" href="#"><span class="material-symbols-outlined text-[24px]">watch</span><span class="font-label-md text-[13px] font-medium leading-tight mt-0.5">Band</span></a><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-[#64748B] hover:text-[#0F172A] transition-colors" data-path="history" href="#"><span class="material-symbols-outlined text-[24px]">history</span><span class="font-label-md text-[13px] font-medium leading-tight mt-0.5">History</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] transition-colors text-[#1C27D6] font-bold" data-path="menu" href="#"><span class="material-symbols-outlined text-[24px]">menu</span><span class="font-label-md text-[13px] leading-tight mt-0.5 font-bold">Menu</span></a></div></nav></body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#1C27D6",
+        "primary-dark": "#151D9E",
+        "primary-soft": "#EEF0FF",
+        "background": "#F7F8FC",
+        "surface": "#FFFFFF",
+        "on-surface": "#0F172A",
+        "on-surface-variant": "#475569",
+        "border-subtle": "#E2E8F0"
+      },
+      borderRadius: {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "2xl": "1rem",
+        "full": "9999px"
+      },
+      spacing: {
+        "space-xs": "0.5rem",
+        "space-sm": "0.75rem",
+        "space-md": "1rem",
+        "space-lg": "1.5rem",
+        "space-xl": "2rem",
+        "gutter": "1rem",
+        "margin": "1.25rem"
+      },
+      fontFamily: {
+        "headline-lg": ["Manrope", "sans-serif"],
+        "headline-md": ["Manrope", "sans-serif"],
+        "headline-xl": ["Manrope", "sans-serif"],
+        "body-md": ["Hanken Grotesk", "sans-serif"],
+        "body-lg": ["Hanken Grotesk", "sans-serif"],
+        "label-lg": ["Hanken Grotesk", "sans-serif"],
+        "label-md": ["Hanken Grotesk", "sans-serif"]
+      }
+    }
+  }
+};</script></head><body class="bg-[#EDF0F7] font-body-md text-[#0F172A] antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-[#EDF0F7]/90 backdrop-blur-xl border-b border-[#D8DFEB]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-[#1C27D6] flex items-center justify-center text-white"><span class="material-symbols-outlined text-[20px]">check_circle</span></div><span class="font-headline-md text-xl font-bold tracking-tight text-[#0F172A]">HealthNest</span></div><div class="w-8 h-8 rounded-full bg-[#1C27D6] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-white text-[18px]">person</span></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-[#EDF0F7] min-h-screen"><div class="flex flex-col w-full px-margin pb-6 gap-y-4 pt-4">
+<!-- 1. Connection Status Banner -->
+<div class="w-full bg-[#DCFCE7] border border-[#BBF7D0] rounded-2xl px-4 py-3.5 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#15803D] text-[22px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-lg font-semibold text-[#15803D]">Wristband Connected</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 bg-white/90 rounded-full border border-[#BBF7D0]">
+<span class="w-2 h-2 rounded-full bg-[#15803D] animate-pulse"></span>
+<span class="font-label-md text-[#15803D] text-xs font-semibold">Live</span>
+</div>
+</div>
+<!-- 2. Shift Status Line -->
+<div class="w-full flex flex-col pt-1 pb-1">
+<div class="flex items-center gap-2 px-1">
+<span class="material-symbols-outlined text-[#475569] text-[20px]">schedule</span>
+<p class="font-body-md text-[#475569] font-medium text-sm">Shift active since 8:04 AM</p>
+</div>
+<div class="w-full h-px bg-[#D8DFEB] mt-3"></div>
+</div>
+<!-- 3. Big State Card (Calm) -->
+<section class="w-full bg-white/95 rounded-2xl p-6 border border-[#D9DFEC] shadow-sm flex flex-col items-center text-center">
+<!-- Calm Aura Badge -->
+<div class="relative flex items-center justify-center my-3"><div class="absolute w-28 h-28 rounded-full bg-[#C6F2D6] animate-ping opacity-60"></div><div class="relative w-20 h-20 rounded-full bg-[#D1F7DE] border border-[#A7E8C1] flex items-center justify-center shadow-inner"><span class="material-symbols-outlined text-[#15803D] text-[42px]" style="font-variation-settings: 'FILL' 1;">check_circle</span></div></div>
+<!-- Prominent Status Heading -->
+<h1 class="font-headline-lg text-2xl text-[#0F172A] font-bold mt-3 tracking-tight">
+      You are Calm
+    </h1>
+<!-- Clear, Direct Human Reassurance -->
+<p class="font-body-lg text-[#475569] text-base mt-2 max-w-[280px]">
+      Your heart and vitals are steady. Keep doing what you are doing.
+    </p>
+<!-- Shift Stability Micro-Chip -->
+<div class="mt-5 inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#DCFCE7] rounded-full border border-[#BBF7D0]">
+<span class="material-symbols-outlined text-[#15803D] text-[16px]">sentiment_satisfied</span>
+<span class="font-label-md text-xs text-[#15803D] font-semibold">Optimal Vitals Zone</span>
+</div>
+</section>
+<!-- 4. Two Metric Tiles Side-by-Side -->
+<div class="grid grid-cols-2 gap-3.5 w-full"><div class="bg-[#F5F7FD] rounded-2xl p-4 border border-[#D9DFEC] shadow-sm flex flex-col justify-between min-h-[148px]"><div class="flex items-center justify-between"><div class="w-10 h-10 rounded-xl bg-white border border-[#D9DFEC] flex items-center justify-center"><span class="material-symbols-outlined text-[#475569] text-[22px]">favorite</span></div><span class="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] border border-[#BBF7D0] font-label-md text-xs font-semibold">Normal</span></div><div class="mt-3"><span class="font-label-md text-[#475569] text-xs block truncate">Heart Rate</span><div class="flex items-baseline gap-1 mt-0.5"><span class="font-headline-xl text-3xl text-[#0F172A] font-bold">72</span><span class="font-label-md text-xs text-[#475569]">bpm</span></div></div></div><div class="bg-[#F5F7FD] rounded-2xl p-4 border border-[#D9DFEC] shadow-sm flex flex-col justify-between min-h-[148px]"><div class="flex items-center justify-between"><div class="w-10 h-10 rounded-xl bg-white border border-[#D9DFEC] flex items-center justify-center"><span class="material-symbols-outlined text-[#475569] text-[22px]">water_drop</span></div><span class="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] border border-[#BBF7D0] font-label-md text-xs font-semibold">Good</span></div><div class="mt-3"><span class="font-label-md text-[#475569] text-xs block truncate">Blood Oxygen</span><div class="flex items-baseline gap-1 mt-0.5"><span class="font-headline-xl text-3xl text-[#0F172A] font-bold">98</span><span class="font-label-md text-xs text-[#475569]">%</span></div></div></div></div>
+<!-- 5. Footer Notice -->
+<footer class="w-full text-center py-4 px-space-xs mt-auto">
+<p class="font-body-md text-[#475569] text-xs leading-relaxed">
+      This is a wellness tool, not a medical diagnosis.
+    </p>
+</footer>
+</div>
+<script>
+  // Ensure the Home navigation link in App Shell reflects active status
+  (function() {
+    const homeTab = document.querySelector('nav a[data-path="home"]');
+    if (homeTab) {
+      homeTab.classList.remove('text-[#475569]');
+      homeTab.classList.add('text-[#1C27D6]', 'font-bold');
+      const icon = homeTab.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.style.fontVariationSettings = "'FILL' 1";
+      }
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-[#F8FAFD] border-t border-[#D8DFEB]" data-active-classes="text-[#1C27D6] font-bold"><div class="grid grid-cols-4 h-16 max-w-md mx-auto items-center px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-[#1C27D6] font-bold" data-path="home" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="font-label-md text-[13px] leading-tight mt-0.5">Home</span></a><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-[#475569] hover:text-[#0F172A] transition-colors" data-path="band" href="#"><span class="material-symbols-outlined text-[24px]">watch</span><span class="font-label-md text-[13px] leading-tight mt-0.5">Band</span></a><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-[#475569] hover:text-[#0F172A] transition-colors" data-path="history" href="#"><span class="material-symbols-outlined text-[24px]">history</span><span class="font-label-md text-[13px] leading-tight mt-0.5">History</span></a><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-[#475569] hover:text-[#0F172A] transition-colors" data-path="menu" href="#"><span class="material-symbols-outlined text-[24px]">menu</span><span class="font-label-md text-[13px] leading-tight mt-0.5">Menu</span></a></div></nav>
+
+
+</body></html>

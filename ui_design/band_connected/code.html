@@ -1,0 +1,129 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#1C27D6",
+        "primary-dark": "#151D9E",
+        "primary-soft": "#EEF0FF",
+        background: "#F7F8FC",
+        "app-text": "#0F172A",
+        "secondary-text": "#475569",
+        "app-border": "#E2E8F0"
+      },
+      borderRadius: {
+        DEFAULT: "0.25rem",
+        lg: "0.5rem",
+        xl: "0.75rem",
+        full: "9999px"
+      },
+      spacing: {
+        "space-xl": "2rem",
+        "space-sm": "0.75rem",
+        "space-md": "1rem",
+        gutter: "1rem",
+        "space-xs": "0.5rem",
+        margin: "1.25rem",
+        "space-lg": "1.5rem"
+      },
+      fontFamily: {
+        headline: ["Manrope", "sans-serif"],
+        body: ["Public Sans", "sans-serif"]
+      }
+    }
+  }
+};</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-background font-body text-app-text antialiased flex flex-col min-h-screen" style="min-height: max(884px, 100dvh); background-color: rgb(237, 240, 247);"><header class="fixed top-0 w-full z-50 pt-safe bg-[#F7F8FC]/90 backdrop-blur-xl border-b border-app-border" style="background-color: rgba(237, 240, 247, 0.92); border-color: rgb(217, 223, 236);"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">health_and_safety</span></div><span class="font-headline text-[20px] font-bold tracking-tight text-app-text">HealthNest</span><span class="text-[14px] text-secondary-text font-medium ml-1 hidden sm:inline">| Band</span></div><div class="w-8 h-8 rounded-full bg-primary-soft text-primary border border-primary/20 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[18px]">person</span></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-background min-h-screen" style="background-color: rgb(237, 240, 247);"><div class="flex flex-col w-full px-margin pb-space-xl">
+<!-- Page Subheader -->
+<div class="mt-space-md mb-space-lg">
+<h1 class="font-headline text-[26px] font-bold text-app-text tracking-tight leading-tight">Band Connection</h1>
+<p class="text-[15px] text-secondary-text mt-0.5">Manage your HealthNest device</p>
+</div>
+<!-- Hero Device Visual Stage Card -->
+<div class="w-full bg-white rounded-xl border border-app-border p-space-lg flex flex-col items-center justify-center relative overflow-hidden shadow-sm" style="background-color: rgb(255, 255, 255); border-color: rgb(217, 223, 236); box-shadow: rgba(15, 23, 42, 0.06) 0px 4px 16px -2px;">
+<!-- Pulse Ring Stage -->
+<div class="relative w-44 h-44 flex items-center justify-center my-space-xs">
+<!-- Radiating Pulse Rings in subtle soft blue/gray -->
+<div class="absolute inset-0 rounded-full bg-primary-soft/70 animate-ping opacity-60 pointer-events-none"></div>
+<div class="absolute -inset-3 rounded-full bg-primary-soft/40 pointer-events-none"></div>
+<div class="absolute inset-2 rounded-full bg-[#F1F5F9]/80 border border-app-border pointer-events-none" style="background-color: rgb(228, 234, 248); border-color: rgb(207, 215, 235);"></div>
+<!-- Central Device Disc -->
+<div class="relative z-10 w-28 h-28 rounded-full bg-white border border-app-border shadow-sm flex items-center justify-center text-primary transition-transform active:scale-95 duration-150" style="background-color: rgb(255, 255, 255); border-color: rgb(217, 223, 236); box-shadow: rgba(28, 39, 214, 0.08) 0px 2px 8px;">
+<span class="material-symbols-outlined text-[54px] select-none text-primary">watch</span>
+</div>
+</div>
+<!-- Device Name & Connected Status Badge -->
+<div class="mt-space-md flex flex-col items-center text-center">
+<div class="inline-flex items-center gap-1.5 bg-[#DCFCE7] text-[#15803D] px-3.5 py-1.5 rounded-full font-medium text-[13px] tracking-wide mb-3">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-bold">Connected</span>
+</div>
+<h2 class="font-headline text-[20px] font-bold text-app-text">Connected to HealthNest Band A12</h2>
+</div>
+</div>
+<!-- Disconnect Action Button -->
+<div class="mt-space-lg w-full">
+<button aria-label="Disconnect wristband" class="w-full min-h-[56px] h-14 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 rounded-xl font-body font-semibold text-[16px] flex items-center justify-center gap-2 active:opacity-90 active:scale-[0.99] transition-all select-none shadow-sm cursor-pointer" id="disconnect-btn" type="button">
+<span class="material-symbols-outlined text-[22px]">link_off</span>
+<span class="">Disconnect band</span>
+</button>
+</div>
+<!-- Safety Notice Note -->
+<div class="mt-space-md bg-white border border-app-border rounded-xl p-space-md flex items-start gap-space-sm shadow-sm" style="background-color: rgb(255, 255, 255); border-color: rgb(217, 223, 236); box-shadow: rgba(15, 23, 42, 0.04) 0px 2px 8px -2px;">
+<span class="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5">verified_user</span>
+<p class="text-[14px] text-secondary-text leading-relaxed">
+      Keep your wristband on during your shift for accurate fatigue and stress tracking.
+    </p>
+</div>
+</div>
+<script>
+  (function() {
+    const btn = document.getElementById('disconnect-btn');
+    if (!btn) return;
+    
+    let confirming = false;
+    let timer = null;
+
+    btn.addEventListener('click', function() {
+      if (!confirming) {
+        confirming = true;
+        btn.innerHTML = `
+          <span class="material-symbols-outlined text-[22px]">warning</span>
+          <span>Tap again to confirm</span>
+        `;
+        timer = setTimeout(function() {
+          confirming = false;
+          btn.innerHTML = `
+            <span class="material-symbols-outlined text-[22px]">link_off</span>
+            <span>Disconnect band</span>
+          `;
+        }, 3500);
+      } else {
+        clearTimeout(timer);
+        confirming = false;
+        btn.innerHTML = `
+          <span class="material-symbols-outlined text-[22px] animate-spin">refresh</span>
+          <span>Disconnecting...</span>
+        `;
+        setTimeout(function() {
+          btn.innerHTML = `
+            <span class="material-symbols-outlined text-[22px]">check</span>
+            <span>Disconnected</span>
+          `;
+          setTimeout(function() {
+            btn.innerHTML = `
+              <span class="material-symbols-outlined text-[22px]">link</span>
+              <span>Pair Band</span>
+            `;
+          }, 1500);
+        }, 1200);
+      }
+    });
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-white/95 backdrop-blur-xl border-t border-app-border" style="background-color: rgba(255, 255, 255, 0.94); border-color: rgb(217, 223, 236); box-shadow: rgba(15, 23, 42, 0.04) 0px -4px 12px -2px;"><div class="grid grid-cols-4 h-16 max-w-md mx-auto items-center px-space-xs"><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-secondary-text hover:text-app-text transition-colors" data-path="home" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="text-[12px] font-medium leading-tight mt-0.5">Home</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] transition-colors text-primary font-bold" data-path="band" href="#"><span class="material-symbols-outlined text-[24px]">watch</span><span class="text-[12px] font-bold leading-tight mt-0.5">Band</span></a><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-secondary-text hover:text-app-text transition-colors" data-path="history" href="#"><span class="material-symbols-outlined text-[24px]">history</span><span class="text-[12px] font-medium leading-tight mt-0.5">History</span></a><a class="flex flex-col items-center justify-center min-h-[56px] min-w-[56px] text-secondary-text hover:text-app-text transition-colors" data-path="menu" href="#"><span class="material-symbols-outlined text-[24px]">menu</span><span class="text-[12px] font-medium leading-tight mt-0.5">Menu</span></a></div></nav>
+
+</body></html>
