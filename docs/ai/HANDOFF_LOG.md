@@ -165,3 +165,42 @@ Each agent appends an entry at session end. Read the latest entry first to get c
 - **Rule m**: Before building T-04, read `07_UI_GUIDE.md` and the matching file in `ui_design/` for the home screen layout.
 
 **Suggested commit message:** `feat: implement T-03 auth screens with login, forgot-password, session guard, and JWT storage`
+
+---
+
+### 2026-10-11 — T-04 Home Screen Completion
+
+**Tasks worked on:** T-04 (Home Screen)
+**What changed:**
+- Created `HomeProvider` (`lib/features/home/state/home_provider.dart`) — `ChangeNotifier` subscribing to `WearableSource.sensorStream` (live HR, SpO2) and `WearableSource.connectionStateStream` (Connected/Reconnecting/Disconnected), polling `DataRepository` for ML classifications, managing shift start time formatting, passive tip dismissal, and scenario testing.
+- Rebuilt `HomeScreen` (`lib/features/home/presentation/home_screen.dart`) with pixel-level adherence to `07_UI_GUIDE.md` and mockups:
+  - Header with HealthNest brand icon, title, scenario switcher menu, and profile button.
+  - Reactive BLE connection banner (Connected green pill with pulsing "Live" chip, Reconnecting amber with spinner, Disconnected red with retry tap).
+  - Shift status line ("Shift active since [Time]").
+  - Primary state card showing Calm (green aura + check icon + reassurance + optimal zone chip) or Stressed (burnt orange warning icon + physical monitor tag + alert message) with color + icon + text (NFR-4.4).
+  - Passive tip card when stressed with "Got it" dismissal button (D-24, FR-9.1).
+  - Separate low SpO2 warning card if SpO2 < 95% (FR-6.3).
+  - Vitals grid with two side-by-side metric tiles (Live HR with favorite icon, SpO2 with water_drop icon).
+  - Medical wellness disclaimer footer.
+  - Bottom navigation bar with Home, Band, History, and Menu destinations.
+- Updated `main.dart` — injected `WearableSource`, `DataRepository`, and `HomeProvider` into `MultiProvider`.
+- Added test suite `test/home_screen_test.dart` (5 tests covering `HomeProvider` scenario transitions, SpO2 thresholding, and `HomeScreen` Calm/Stressed widget rendering).
+- Verified `flutter test` (all 20/20 tests passing) and `flutter analyze` (0 issues).
+
+**Files created/modified:**
+- `lib/features/home/state/home_provider.dart` (new)
+- `lib/features/home/presentation/home_screen.dart` (rebuilt)
+- `lib/main.dart` (updated)
+- `test/home_screen_test.dart` (new)
+- `docs/ai/PROGRESS.md` (updated T-04 to done)
+- `docs/ai/HANDOFF_LOG.md` (updated)
+
+**Decisions made:** D-24 (passive stress UI and tip card, no vibration alerts), D-04 (SpO2 < 95% critical threshold separate from ML stress state).
+**Problems encountered:** Fixed post-disposal `notifyListeners` race condition and widget test `pumpAndSettle` timeout caused by mock continuous stream ticker.
+**What the next agent must know:**
+- T-04 is **DONE**.
+- Both `flutter analyze` and `flutter test` are completely clean (20/20 tests passing).
+- The Home Screen supports live scenario switching via the tune icon in the app bar for instant manual verification.
+- The next task is **T-05: Connection UI** (FR-3.6, FR-3.7, FR-3.9, NFR-2.1 — Band connection screen, visual stage card, disconnect/retry flows, failure messaging).
+
+**Suggested commit message:** `feat: implement T-04 home screen with live vitals, reactive state cards, and provider integration`

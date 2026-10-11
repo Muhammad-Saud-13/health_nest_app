@@ -74,7 +74,7 @@ _(none currently — ready for T-04)_
 - Current state reachable within two taps of app launch (NFR-4.2)
 - Data driven by `MockWearableSource` stream via Provider
 - `flutter analyze` clean
-**Status:** not started
+**Status:** done
 
 ---
 

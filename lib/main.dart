@@ -5,13 +5,18 @@ import 'core/config.dart';
 import 'core/constants.dart';
 import 'core/theme.dart';
 import 'data/repositories/auth_repository.dart';
+import 'data/repositories/data_repository.dart';
 import 'data/repositories/mock_auth_repository.dart';
+import 'data/repositories/mock_data_repository.dart';
+import 'data/sources/mock_wearable_source.dart';
+import 'data/sources/wearable_source.dart';
 import 'features/auth/presentation/forgot_password_screen.dart';
 import 'features/auth/presentation/login_screen.dart';
 import 'features/auth/state/auth_provider.dart';
 import 'features/checkin/presentation/checkin_screen.dart';
 import 'features/history/presentation/history_screen.dart';
 import 'features/home/presentation/home_screen.dart';
+import 'features/home/state/home_provider.dart';
 import 'features/settings/presentation/settings_screen.dart';
 
 void main() {
@@ -20,14 +25,30 @@ void main() {
   // Choose repository implementation based on USE_MOCKS flag.
   final AuthRepository authRepository =
       AppConfig.useMocks ? MockAuthRepository() : MockAuthRepository(); // Real impl in T-11
+  final WearableSource wearableSource =
+      AppConfig.useMocks ? MockWearableSource() : MockWearableSource(); // Real impl in T-10
+  final DataRepository dataRepository =
+      AppConfig.useMocks ? MockDataRepository() : MockDataRepository(); // Real impl in T-11
 
-  runApp(HealthNestApp(authRepository: authRepository));
+  runApp(HealthNestApp(
+    authRepository: authRepository,
+    wearableSource: wearableSource,
+    dataRepository: dataRepository,
+  ));
 }
 
 class HealthNestApp extends StatelessWidget {
-  const HealthNestApp({super.key, required this.authRepository});
+  HealthNestApp({
+    super.key,
+    required this.authRepository,
+    WearableSource? wearableSource,
+    DataRepository? dataRepository,
+  })  : wearableSource = wearableSource ?? MockWearableSource(),
+        dataRepository = dataRepository ?? MockDataRepository();
 
   final AuthRepository authRepository;
+  final WearableSource wearableSource;
+  final DataRepository dataRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +57,13 @@ class HealthNestApp extends StatelessWidget {
         ChangeNotifierProvider<AuthProvider>(
           create: (_) => AuthProvider(authRepository: authRepository)
             ..tryRestoreSession(),
+        ),
+        ChangeNotifierProvider<HomeProvider>(
+          create: (context) => HomeProvider(
+            wearableSource: wearableSource,
+            dataRepository: dataRepository,
+            userId: context.read<AuthProvider>().currentUser?.id ?? 1,
+          ),
         ),
       ],
       child: MaterialApp(
