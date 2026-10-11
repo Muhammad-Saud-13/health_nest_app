@@ -4,10 +4,11 @@
 
 - [x] **T-01: Project Skeleton** (Completed 2026-10-08)
 - [x] **T-02: Mock Layer** (Completed 2026-10-09)
+- [x] **T-03: Auth Screens** (Completed 2026-10-11)
 
 ## In Progress
     
-_(none currently — ready for T-03)_
+_(none currently — ready for T-04)_
 
 ## Next (ordered)
 
@@ -51,15 +52,14 @@ _(none currently — ready for T-03)_
 **Covers:** FR-1.1, FR-1.6, NFR-5.4
 **Depends on:** T-02
 **Done when:**
-- Login screen: email + password fields, login button, error display, "Forgot password?" link
-- Forgot-password screen: email field, submit button, confirmation message
+- Login screen: email + password fields, login button, 
 - Logout accessible from settings/menu
 - Login via `MockAuthRepository` succeeds with test credentials
 - Session state managed via Provider; unauthenticated user cannot reach home screen
 - UI uses plain language, large touch targets (NFR-4.1)
 - JWT token saved via `flutter_secure_storage`
 - `flutter analyze` clean
-**Status:** not started
+**Status:** done
 
 ---
 

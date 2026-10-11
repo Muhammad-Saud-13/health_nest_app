@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'core/config.dart';
 import 'core/constants.dart';
 import 'core/theme.dart';
+import 'data/repositories/auth_repository.dart';
+import 'data/repositories/mock_auth_repository.dart';
+import 'features/auth/presentation/forgot_password_screen.dart';
 import 'features/auth/presentation/login_screen.dart';
+import 'features/auth/state/auth_provider.dart';
 import 'features/checkin/presentation/checkin_screen.dart';
 import 'features/history/presentation/history_screen.dart';
 import 'features/home/presentation/home_screen.dart';
@@ -10,26 +16,92 @@ import 'features/settings/presentation/settings_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const HealthNestApp());
+
+  // Choose repository implementation based on USE_MOCKS flag.
+  final AuthRepository authRepository =
+      AppConfig.useMocks ? MockAuthRepository() : MockAuthRepository(); // Real impl in T-11
+
+  runApp(HealthNestApp(authRepository: authRepository));
 }
 
 class HealthNestApp extends StatelessWidget {
-  const HealthNestApp({super.key});
+  const HealthNestApp({super.key, required this.authRepository});
+
+  final AuthRepository authRepository;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppConfig.appTitle,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      initialRoute: AppConstants.routeLogin,
-      routes: {
-        AppConstants.routeLogin: (context) => const LoginScreen(),
-        AppConstants.routeHome: (context) => const HomeScreen(),
-        AppConstants.routeCheckIn: (context) => const CheckInScreen(),
-        AppConstants.routeHistory: (context) => const HistoryScreen(),
-        AppConstants.routeSettings: (context) => const SettingsScreen(),
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(
+          create: (_) => AuthProvider(authRepository: authRepository)
+            ..tryRestoreSession(),
+        ),
+      ],
+      child: MaterialApp(
+        title: AppConfig.appTitle,
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        initialRoute: AppConstants.routeLogin,
+        routes: {
+          AppConstants.routeLogin: (context) => const LoginScreen(),
+          AppConstants.routeForgotPassword: (context) =>
+              const ForgotPasswordScreen(),
+          AppConstants.routeHome: (context) => const _AuthGate(
+                child: HomeScreen(),
+              ),
+          AppConstants.routeCheckIn: (context) => const _AuthGate(
+                child: CheckInScreen(),
+              ),
+          AppConstants.routeHistory: (context) => const _AuthGate(
+                child: HistoryScreen(),
+              ),
+          AppConstants.routeSettings: (context) => const _AuthGate(
+                child: SettingsScreen(),
+              ),
+        },
+      ),
     );
+  }
+}
+
+/// Wrapper widget that guards routes behind authentication.
+///
+/// If the user is not authenticated, they are redirected to the login screen.
+/// This satisfies the T-03 requirement: "unauthenticated user cannot reach home screen".
+class _AuthGate extends StatelessWidget {
+  const _AuthGate({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final authStatus = context.watch<AuthProvider>().status;
+
+    if (authStatus == AuthStatus.unauthenticated) {
+      // Schedule navigation after the current build frame.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppConstants.routeLogin,
+            (route) => false,
+          );
+        }
+      });
+      // Return empty scaffold while redirecting.
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (authStatus == AuthStatus.unknown) {
+      // Still checking session — show a loading indicator.
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return child;
   }
 }

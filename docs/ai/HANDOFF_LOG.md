@@ -133,3 +133,35 @@ Each agent appends an entry at session end. Read the latest entry first to get c
 - All models, repositories, and mocks are importable from `package:healtnest_app/data/data.dart`.
 
 **Suggested commit message:** `feat: implement T-02 mock layer with models, repositories, sqflite offline queue, and unit tests`
+
+---
+
+### 2026-10-11 — T-03 Auth Screens Completion
+
+**Tasks worked on:** T-03 (Auth Screens)
+**What changed:**
+- Created `AuthProvider` (`lib/features/auth/state/auth_provider.dart`) — `ChangeNotifier` managing session state (`unknown` → `authenticated` / `unauthenticated`), wraps `AuthRepository`, persists mock JWT via `flutter_secure_storage`.
+- Replaced placeholder `LoginScreen` with full login form: email + password fields, form validation, error banner, loading spinner, forgot-password link.
+- Created `ForgotPasswordScreen` (`lib/features/auth/presentation/forgot_password_screen.dart`) — email form with success/error states and plain language messaging.
+- Updated `SettingsScreen` to use `AuthProvider.logout()` with confirmation dialog; added user profile card showing name, email, and designation.
+- Updated `main.dart` — wired `MultiProvider` with `AuthProvider`, added `_AuthGate` wrapper that blocks unauthenticated access to home/settings/checkin/history routes, registered `/forgot-password` route.
+- Updated `test/widget_test.dart` to pass required `authRepository` parameter.
+
+**Files created/modified:**
+- `lib/features/auth/state/auth_provider.dart` (new)
+- `lib/features/auth/presentation/login_screen.dart` (replaced)
+- `lib/features/auth/presentation/forgot_password_screen.dart` (new)
+- `lib/features/settings/presentation/settings_screen.dart` (updated)
+- `lib/main.dart` (updated)
+- `test/widget_test.dart` (updated)
+
+**Decisions made:** None new; followed D-10 (JWT custom auth + `flutter_secure_storage`), D-24 (passive UI).
+**Problems encountered:** Fixed 3 `flutter analyze` issues — two `unawaited_futures` lint warnings on Navigator calls, one `missing_required_argument` in widget test after `HealthNestApp` constructor changed.
+**What the next agent must know:**
+- T-03 is **DONE**. `flutter analyze` has 0 issues.
+- Login works with mock credentials: `worker@healthnest.com` / `password123` (or any `@` email with `password123`).
+- `_AuthGate` in `main.dart` enforces that unauthenticated users cannot reach any screen except login and forgot-password.
+- The next task is **T-04: Home Screen** (live state card, HR, SpO2, disclaimer, driven by `MockWearableSource` stream via Provider).
+- **Rule m**: Before building T-04, read `07_UI_GUIDE.md` and the matching file in `ui_design/` for the home screen layout.
+
+**Suggested commit message:** `feat: implement T-03 auth screens with login, forgot-password, session guard, and JWT storage`
