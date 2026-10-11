@@ -202,4 +202,9 @@ class MockDataRepository implements DataRepository {
         .toList()
       ..sort((a, b) => b.recordedAt.compareTo(a.recordedAt));
   }
+
+  /// Helper to insert a classification for dynamic mock scenarios.
+  void addClassification(Classification classification) {
+    _classifications.add(classification);
+  }
 }

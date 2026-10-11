@@ -6,6 +6,7 @@ import '../../../core/config.dart';
 import '../../../data/models/classification.dart';
 import '../../../data/models/sensor_packet.dart';
 import '../../../data/repositories/data_repository.dart';
+import '../../../data/repositories/mock_data_repository.dart';
 import '../../../data/sources/mock_wearable_source.dart';
 import '../../../data/sources/wearable_source.dart';
 
@@ -137,8 +138,8 @@ class HomeProvider extends ChangeNotifier {
 
       final now = DateTime.now();
       if (scenario == MockScenario.stressSpike) {
-        _latestClassification = Classification(
-          id: 9999,
+        final stressed = Classification(
+          id: DateTime.now().millisecondsSinceEpoch,
           sessionId: 101,
           userId: _userId,
           windowStart: now.subtract(const Duration(minutes: 5)),
@@ -152,10 +153,15 @@ class HomeProvider extends ChangeNotifier {
           stressProb: 0.89,
           isCalibrating: false,
         );
+        _latestClassification = stressed;
+        final repo = _dataRepo;
+        if (repo is MockDataRepository) {
+          repo.addClassification(stressed);
+        }
         _tipDismissed = false;
       } else if (scenario == MockScenario.calm) {
-        _latestClassification = Classification(
-          id: 9998,
+        final calm = Classification(
+          id: DateTime.now().millisecondsSinceEpoch,
           sessionId: 101,
           userId: _userId,
           windowStart: now.subtract(const Duration(minutes: 5)),
@@ -169,6 +175,11 @@ class HomeProvider extends ChangeNotifier {
           stressProb: 0.12,
           isCalibrating: false,
         );
+        _latestClassification = calm;
+        final repo = _dataRepo;
+        if (repo is MockDataRepository) {
+          repo.addClassification(calm);
+        }
       }
       notifyListeners();
     }
@@ -215,6 +226,13 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future<void> _loadClassification() async {
+    final source = _wearableSource;
+    if (source is MockWearableSource &&
+        source.currentScenario == MockScenario.stressSpike) {
+      // In Stress Spike scenario, preserve the stressed state
+      return;
+    }
+
     final classification =
         await _dataRepo.getLatestClassification(userId: _userId);
     if (classification != null) {
