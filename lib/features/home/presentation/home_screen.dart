@@ -87,13 +87,7 @@ class HomeScreen extends StatelessWidget {
   void _handleNavigation(BuildContext context, int index) {
     if (index == 0) return; // Already on Home
     if (index == 1) {
-      // Band Connection route placeholder or settings
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Wristband is managed via Bluetooth.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      Navigator.pushNamed(context, AppConstants.routeBand);
     } else if (index == 2) {
       Navigator.pushNamed(context, AppConstants.routeHistory);
     } else if (index == 3) {

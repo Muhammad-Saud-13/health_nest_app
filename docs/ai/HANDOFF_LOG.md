@@ -204,3 +204,35 @@ Each agent appends an entry at session end. Read the latest entry first to get c
 - The next task is **T-05: Connection UI** (FR-3.6, FR-3.7, FR-3.9, NFR-2.1 — Band connection screen, visual stage card, disconnect/retry flows, failure messaging).
 
 **Suggested commit message:** `feat: implement T-04 home screen with live vitals, reactive state cards, and provider integration`
+
+---
+
+### 2026-10-12 - T-05 Connection UI Completion
+
+**Tasks worked on:** T-05 (Connection UI)
+**What changed:**
+- Added `ConnectionProvider` to drive wristband connection state from `WearableSource.connectionStateStream`, including retry, disconnect, device-not-found, connection-failure, and mock auto-reconnect simulation.
+- Added the Band Connection screen with Connected, Reconnecting, and Disconnected visual states using color, icon/spinner, and text; included failure alert messaging and bottom navigation.
+- Wired `/band` route into `main.dart` and Home bottom navigation; expanded `MockWearableSource` with failure hooks and disconnect -> reconnecting -> connected timing.
+- Added `test/connection_screen_test.dart` for provider state transitions and Band screen rendering.
+- Restored BLE UUID constants to documented `TBD-*` placeholders until vendor UUIDs are provided.
+
+**Files touched:**
+- `lib/core/constants.dart`
+- `lib/data/sources/mock_wearable_source.dart`
+- `lib/features/connection/state/connection_provider.dart`
+- `lib/features/connection/presentation/band_screen.dart`
+- `lib/features/home/presentation/home_screen.dart`
+- `lib/main.dart`
+- `test/connection_screen_test.dart`
+- `docs/ai/PROGRESS.md`
+- `docs/ai/HANDOFF_LOG.md`
+
+**Decisions made:** None new; followed `05_BLE_SPEC.md` Rule 7/8 and placeholder UUID guidance.
+**Problems encountered:** Local Flutter/Dart commands hung with no output in this session (`flutter analyze`, `dart analyze`, `flutter test test\connection_screen_test.dart`, and `dart format`). They were interrupted after repeated long waits, so verification still needs to be rerun in a healthy local toolchain.
+**What the next agent must know:**
+- T-05 implementation is in place and `PROGRESS.md` is marked done.
+- Re-run `dart format`, `flutter analyze`, and `flutter test` before starting T-06 if the Flutter/Dart toolchain is responsive.
+- Next task is **T-06: Sustained Stress Notification Display**.
+
+**Suggested commit message:** `T-05: implement connection UI with mock reconnect states`

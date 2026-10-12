@@ -1,8 +1,8 @@
 /// System-wide constants (BLE UUIDs, Storage Keys, Route Names)
 class AppConstants {
   // BLE UUID Placeholders (TBD from vendor)
-  static const String serviceUuid = '0000180d-0000-1000-8000-00805f9b34fb';
-  static const String sensorCharUuid = '00002a37-0000-1000-8000-00805f9b34fb';
+  static const String serviceUuid = 'TBD-SERVICE-UUID';
+  static const String sensorCharUuid = 'TBD-SENSOR-CHAR-UUID';
 
   // Secure Storage Keys
   static const String authTokenKey = 'auth_token';
@@ -15,4 +15,5 @@ class AppConstants {
   static const String routeHistory = '/history';
   static const String routeSettings = '/settings';
   static const String routeForgotPassword = '/forgot-password';
+  static const String routeBand = '/band';
 }

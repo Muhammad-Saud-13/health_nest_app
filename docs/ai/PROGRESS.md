@@ -5,10 +5,12 @@
 - [x] **T-01: Project Skeleton** (Completed 2026-10-08)
 - [x] **T-02: Mock Layer** (Completed 2026-10-09)
 - [x] **T-03: Auth Screens** (Completed 2026-10-11)
+- [x] **T-04: Home Screen** (Completed 2026-10-11)
+- [x] **T-05: Connection UI** (Completed 2026-10-12)
 
 ## In Progress
     
-_(none currently — ready for T-04)_
+_(none currently - ready for T-06)_
 
 ## Next (ordered)
 
@@ -88,7 +90,7 @@ _(none currently — ready for T-04)_
 - Connection state driven by `MockWearableSource` connection stream
 - Auto-reconnect behaviour simulated in mock (disconnect → reconnecting → connected cycle)
 - `flutter analyze` clean
-**Status:** not started
+**Status:** done
 
 ---
 

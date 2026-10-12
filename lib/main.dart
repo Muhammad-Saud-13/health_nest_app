@@ -14,6 +14,8 @@ import 'features/auth/presentation/forgot_password_screen.dart';
 import 'features/auth/presentation/login_screen.dart';
 import 'features/auth/state/auth_provider.dart';
 import 'features/checkin/presentation/checkin_screen.dart';
+import 'features/connection/presentation/band_screen.dart';
+import 'features/connection/state/connection_provider.dart';
 import 'features/history/presentation/history_screen.dart';
 import 'features/home/presentation/home_screen.dart';
 import 'features/home/state/home_provider.dart';
@@ -65,6 +67,11 @@ class HealthNestApp extends StatelessWidget {
             userId: context.read<AuthProvider>().currentUser?.id ?? 1,
           ),
         ),
+        ChangeNotifierProvider<ConnectionProvider>(
+          create: (_) => ConnectionProvider(
+            wearableSource: wearableSource,
+          ),
+        ),
       ],
       child: MaterialApp(
         title: AppConfig.appTitle,
@@ -77,6 +84,9 @@ class HealthNestApp extends StatelessWidget {
               const ForgotPasswordScreen(),
           AppConstants.routeHome: (context) => const _AuthGate(
                 child: HomeScreen(),
+              ),
+          AppConstants.routeBand: (context) => const _AuthGate(
+                child: BandScreen(),
               ),
           AppConstants.routeCheckIn: (context) => const _AuthGate(
                 child: CheckInScreen(),

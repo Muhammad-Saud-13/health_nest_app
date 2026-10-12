@@ -42,6 +42,11 @@ class MockWearableSource implements WearableSource {
 
   MockScenario get currentScenario => _currentScenario;
 
+  bool _shouldFailConnect = false;
+  String? _connectFailureReason;
+  Timer? _reconnectTimer;
+  Timer? _reconnectCompleteTimer;
+
   @override
   Future<void> connect({String? deviceId}) async {
     if (_currentState == WearableConnectionState.connected) return;
@@ -49,15 +54,31 @@ class MockWearableSource implements WearableSource {
     _updateState(WearableConnectionState.connecting);
     await Future<void>.delayed(const Duration(milliseconds: 600));
 
+    if (_shouldFailConnect) {
+      _shouldFailConnect = false;
+      final reason = _connectFailureReason ?? 'Band not found';
+      _connectFailureReason = null;
+      _updateState(WearableConnectionState.disconnected);
+      throw Exception(reason);
+    }
+
     _updateState(WearableConnectionState.connected);
     _startTicker();
   }
 
   @override
   Future<void> disconnect() async {
+    _reconnectTimer?.cancel();
+    _reconnectCompleteTimer?.cancel();
     _ticker?.cancel();
     _ticker = null;
     _updateState(WearableConnectionState.disconnected);
+  }
+
+  /// Configure the next connection attempt to simulate a failure (FR-3.9).
+  void setNextConnectFailure({String? reason}) {
+    _shouldFailConnect = true;
+    _connectFailureReason = reason;
   }
 
   /// Manually switch scenario for testing or UI demonstrations.
@@ -73,13 +94,30 @@ class MockWearableSource implements WearableSource {
   void triggerStressSpikeScenario() => setScenario(MockScenario.stressSpike);
   void triggerLowSpo2Scenario() => setScenario(MockScenario.lowSpo2);
 
-  /// Simulate temporary disconnection with 5-second auto-reconnect (BLE Spec §4.2)
-  void simulateDisconnectAndReconnect() {
-    _updateState(WearableConnectionState.reconnecting);
-    Timer(const Duration(seconds: 4), () {
-      if (_currentState == WearableConnectionState.reconnecting) {
-        _updateState(WearableConnectionState.connected);
-        _currentScenario = MockScenario.calm;
+  /// Simulate temporary disconnection with auto-reconnect cycle:
+  /// disconnect -> reconnecting -> connected (BLE Spec §4.2 / NFR-2.1 / T-05)
+  void simulateDisconnectAndReconnect({
+    Duration disconnectDuration = const Duration(seconds: 1),
+    Duration reconnectDuration = const Duration(seconds: 4),
+  }) {
+    _ticker?.cancel();
+    _ticker = null;
+    _updateState(WearableConnectionState.disconnected);
+
+    _reconnectTimer?.cancel();
+    _reconnectCompleteTimer?.cancel();
+
+    _reconnectTimer = Timer(disconnectDuration, () {
+      if (_currentState == WearableConnectionState.disconnected) {
+        _updateState(WearableConnectionState.reconnecting);
+
+        _reconnectCompleteTimer = Timer(reconnectDuration, () {
+          if (_currentState == WearableConnectionState.reconnecting) {
+            _updateState(WearableConnectionState.connected);
+            _currentScenario = MockScenario.calm;
+            _startTicker();
+          }
+        });
       }
     });
   }
@@ -164,6 +202,8 @@ class MockWearableSource implements WearableSource {
 
   @override
   void dispose() {
+    _reconnectTimer?.cancel();
+    _reconnectCompleteTimer?.cancel();
     _ticker?.cancel();
     _sensorController.close();
     _connectionController.close();
