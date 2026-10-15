@@ -145,10 +145,13 @@ void main() {
 
     testWidgets('Renders Connected visual state with pulse disc and disconnect button',
         (WidgetTester tester) async {
-      await provider.connect();
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(buildTestWidget());
-      await tester.pump();
+      provider.connect();
+      await tester.pump(const Duration(milliseconds: 700));
 
       // Connected badge
       expect(find.text('Connected'), findsOneWidget);
@@ -164,36 +167,50 @@ void main() {
       expect(find.byIcon(Icons.link_off_rounded), findsOneWidget);
 
       // Tap disconnect once -> prompt confirmation
+      await tester.ensureVisible(find.text('Disconnect band'));
       await tester.tap(find.text('Disconnect band'));
       await tester.pump();
       expect(find.text('Tap again to confirm disconnect'), findsOneWidget);
 
       // Tap second time -> disconnects
+      await tester.ensureVisible(find.text('Tap again to confirm disconnect'));
       await tester.tap(find.text('Tap again to confirm disconnect'));
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
       expect(provider.isDisconnected, isTrue);
+
+      await mockSource.disconnect();
     });
 
     testWidgets('Renders Reconnecting state with spinner and amber theme',
         (WidgetTester tester) async {
-      mockSource.simulateDisconnectAndReconnect(
-        disconnectDuration: Duration.zero,
-        reconnectDuration: const Duration(seconds: 10),
-      );
-      await Future<void>.delayed(const Duration(milliseconds: 20));
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(buildTestWidget());
-      await tester.pump();
+      mockSource.simulateDisconnectAndReconnect(
+        disconnectDuration: Duration.zero,
+        reconnectDuration: const Duration(milliseconds: 100),
+      );
+      await tester.pump(const Duration(milliseconds: 20));
 
       // Reconnecting text & progress indicator
       expect(find.text('Reconnecting...'), findsOneWidget);
       expect(find.text('Reconnecting to HealthNest Band A12...'), findsOneWidget);
       expect(find.textContaining('Trying again automatically'), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsWidgets);
+
+      // Advance clock past the reconnect timer and cancel stream ticker
+      await tester.pump(const Duration(milliseconds: 200));
+      await mockSource.disconnect();
     });
 
     testWidgets('Renders Failure Alert Card when error occurs (FR-3.9)',
         (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
       await provider.simulateDeviceNotFound();
 
       await tester.pumpWidget(buildTestWidget());
@@ -205,10 +222,15 @@ void main() {
       expect(find.text('Retry Now'), findsOneWidget);
 
       // Retry button taps retry
+      await tester.ensureVisible(find.text('Retry Now'));
       await tester.tap(find.text('Retry Now'));
       await tester.pump();
       // Tapping retry clears previous message and attempts connect
       expect(find.text('Connection Issue'), findsNothing);
+
+      // Flush connect() delay to prevent pending timer assertion
+      await tester.pump(const Duration(milliseconds: 700));
+      await mockSource.disconnect();
     });
   });
 }

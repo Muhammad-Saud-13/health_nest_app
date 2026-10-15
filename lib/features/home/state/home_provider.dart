@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../../../core/config.dart';
+import '../../../data/models/alert.dart';
 import '../../../data/models/classification.dart';
 import '../../../data/models/sensor_packet.dart';
 import '../../../data/repositories/data_repository.dart';
@@ -128,6 +129,57 @@ class HomeProvider extends ChangeNotifier {
   }
 
   // ---------------------------------------------------------------------------
+  // Backend Alerts (FR-6.2, FR-9.1 — Sustained Stress & SpO2 Low)
+  // ---------------------------------------------------------------------------
+
+  List<Alert> _activeAlerts = [];
+  List<Alert> get activeAlerts => List.unmodifiable(_activeAlerts);
+
+  /// True when backend has generated a sustained-stress alert (STRESS_SUSTAINED)
+  /// and the worker is currently in a Stressed state (FR-6.2, FR-9.1, D-24).
+  bool get hasSustainedStressAlert =>
+      isStressed &&
+      _activeAlerts.any((a) => a.type == 'STRESS_SUSTAINED' && a.isOpen);
+
+  /// The most recent open sustained-stress alert, or null.
+  Alert? get sustainedStressAlert {
+    final matches = _activeAlerts
+        .where((a) => a.type == 'STRESS_SUSTAINED' && a.isOpen)
+        .toList();
+    if (matches.isEmpty) return null;
+    matches.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return matches.first;
+  }
+
+  /// True when backend has generated a low-SpO2 alert.
+  bool get hasLowSpo2Alert =>
+      _activeAlerts.any((a) => a.type == 'SPO2_LOW' && a.isOpen);
+
+  /// The most recent open SpO2-low alert, or null.
+  Alert? get lowSpo2Alert {
+    final matches = _activeAlerts
+        .where((a) => a.type == 'SPO2_LOW' && a.isOpen)
+        .toList();
+    if (matches.isEmpty) return null;
+    matches.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return matches.first;
+  }
+
+  bool _spo2AlertDismissed = false;
+  bool get spo2AlertDismissed => _spo2AlertDismissed;
+
+  /// Acknowledge an alert (FR-9.3). Updates local state and calls repository.
+  Future<void> acknowledgeAlert(int alertId) async {
+    // Dismiss fallback tip cards as well so a second redundant card never appears.
+    _tipDismissed = true;
+    _spo2AlertDismissed = true;
+    await _dataRepo.acknowledgeAlert(alertId: alertId);
+    // Refresh alerts after acknowledging
+    await _loadAlerts();
+    notifyListeners();
+  }
+
+  // ---------------------------------------------------------------------------
   // Scenario Simulation (For testing & interactive preview)
   // ---------------------------------------------------------------------------
 
@@ -137,6 +189,8 @@ class HomeProvider extends ChangeNotifier {
       source.setScenario(scenario);
 
       final now = DateTime.now();
+      final repo = _dataRepo;
+
       if (scenario == MockScenario.stressSpike) {
         final stressed = Classification(
           id: DateTime.now().millisecondsSinceEpoch,
@@ -154,11 +208,21 @@ class HomeProvider extends ChangeNotifier {
           isCalibrating: false,
         );
         _latestClassification = stressed;
-        final repo = _dataRepo;
         if (repo is MockDataRepository) {
           repo.addClassification(stressed);
+          // Simulate backend generating a sustained stress alert (FR-6.2)
+          repo.generateSustainedStressAlert(
+            userId: _userId,
+            sessionId: 101,
+          );
         }
         _tipDismissed = false;
+      } else if (scenario == MockScenario.lowSpo2) {
+        _spo2AlertDismissed = false;
+        // Also generate a low SpO2 backend alert
+        if (repo is MockDataRepository) {
+          repo.generateLowSpo2Alert(userId: _userId, sessionId: 101);
+        }
       } else if (scenario == MockScenario.calm) {
         final calm = Classification(
           id: DateTime.now().millisecondsSinceEpoch,
@@ -176,11 +240,13 @@ class HomeProvider extends ChangeNotifier {
           isCalibrating: false,
         );
         _latestClassification = calm;
-        final repo = _dataRepo;
         if (repo is MockDataRepository) {
           repo.addClassification(calm);
         }
       }
+
+      // Refresh alerts to reflect scenario changes
+      _loadAlerts();
       notifyListeners();
     }
   }
@@ -213,16 +279,20 @@ class HomeProvider extends ChangeNotifier {
     // Auto-connect the wearable source.
     await _wearableSource.connect();
 
-    // Load initial classification and shift info.
+    // Load initial classification, alerts, and shift info.
     await _loadClassification();
+    await _loadAlerts();
     await _loadShiftInfo();
 
     _isLoading = false;
     notifyListeners();
 
-    // Poll for updated classification every 5 seconds (simulates backend push).
+    // Poll for updated classification and alerts every 5 seconds (simulates backend push).
     _classificationPollTimer =
-        Timer.periodic(const Duration(seconds: 5), (_) => _loadClassification());
+        Timer.periodic(const Duration(seconds: 5), (_) {
+      _loadClassification();
+      _loadAlerts();
+    });
   }
 
   Future<void> _loadClassification() async {
@@ -249,6 +319,13 @@ class HomeProvider extends ChangeNotifier {
   Future<void> _loadShiftInfo() async {
     final session = await _dataRepo.getActiveShiftSession(userId: _userId);
     _shiftStartTime = session?.startedAt;
+    notifyListeners();
+  }
+
+  /// Fetch active alerts from backend (FR-6.2, FR-9.1).
+  Future<void> _loadAlerts() async {
+    final alerts = await _dataRepo.getActiveAlerts(userId: _userId);
+    _activeAlerts = alerts;
     notifyListeners();
   }
 

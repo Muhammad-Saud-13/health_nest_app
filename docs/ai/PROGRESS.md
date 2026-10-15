@@ -7,10 +7,11 @@
 - [x] **T-03: Auth Screens** (Completed 2026-10-11)
 - [x] **T-04: Home Screen** (Completed 2026-10-11)
 - [x] **T-05: Connection UI** (Completed 2026-10-12)
+- [x] **T-06: Sustained Stress Notification Display** (Completed 2026-10-15)
 
 ## In Progress
     
-_(none currently - ready for T-06)_
+_(none currently - ready for T-07)_
 
 ## Next (ordered)
 
@@ -103,7 +104,7 @@ _(none currently - ready for T-06)_
 - SpO2 low alert displayed when SpO2 < 95% (separate from stress state)
 - Clear, plain language wellness message & recommendation card (NFR-4.1)
 - `flutter analyze` clean
-**Status:** not started
+**Status:** done
 
 ---
 

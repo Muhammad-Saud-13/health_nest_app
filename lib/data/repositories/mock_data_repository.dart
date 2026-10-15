@@ -100,6 +100,18 @@ class MockDataRepository implements DataRepository {
         status: 'OPEN',
       ),
     );
+
+    // Add a canned SpO2 low alert (linked to the i==3 window where spo2 was 94%)
+    _alerts.add(
+      Alert(
+        id: 2,
+        sessionId: 101,
+        userId: 1,
+        type: 'SPO2_LOW',
+        createdAt: now.subtract(const Duration(hours: 3)),
+        status: 'ACK', // Already acknowledged (historical)
+      ),
+    );
   }
 
   @override
@@ -206,5 +218,48 @@ class MockDataRepository implements DataRepository {
   /// Helper to insert a classification for dynamic mock scenarios.
   void addClassification(Classification classification) {
     _classifications.add(classification);
+  }
+
+  /// Helper to insert an alert for dynamic mock scenarios.
+  void addAlert(Alert alert) {
+    _alerts.add(alert);
+  }
+
+  /// Generate a sustained stress alert (simulates backend D-24 behaviour).
+  void generateSustainedStressAlert({required int userId, required int sessionId}) {
+    final existingOpen = _alerts.any(
+      (a) => a.type == 'STRESS_SUSTAINED' && a.userId == userId && a.isOpen,
+    );
+    if (!existingOpen) {
+      _alerts.add(
+        Alert(
+          id: DateTime.now().millisecondsSinceEpoch,
+          sessionId: sessionId,
+          userId: userId,
+          type: 'STRESS_SUSTAINED',
+          createdAt: DateTime.now(),
+          status: 'OPEN',
+        ),
+      );
+    }
+  }
+
+  /// Generate a low SpO2 alert (simulates backend SPO2_LOW detection).
+  void generateLowSpo2Alert({required int userId, required int sessionId}) {
+    final existingOpen = _alerts.any(
+      (a) => a.type == 'SPO2_LOW' && a.userId == userId && a.isOpen,
+    );
+    if (!existingOpen) {
+      _alerts.add(
+        Alert(
+          id: DateTime.now().millisecondsSinceEpoch + 1,
+          sessionId: sessionId,
+          userId: userId,
+          type: 'SPO2_LOW',
+          createdAt: DateTime.now(),
+          status: 'OPEN',
+        ),
+      );
+    }
   }
 }

@@ -405,7 +405,7 @@ class _FailureAlertCard extends StatelessWidget {
                 style: TextButton.styleFrom(
                   foregroundColor: const Color(0xFFB91C1C),
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  backgroundColor: Colors.white.withOpacity(0.7),
+                  backgroundColor: Colors.white.withValues(alpha: 0.7),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                     side: const BorderSide(color: Color(0xFFFECACA)),
@@ -495,21 +495,21 @@ class _DeviceStageCard extends StatelessWidget {
 
     switch (state) {
       case WearableConnectionState.connected:
-        ringOuterColor = AppColors.primarySoft.withOpacity(0.7);
-        ringMidColor = AppColors.primarySoft.withOpacity(0.4);
+        ringOuterColor = AppColors.primarySoft.withValues(alpha: 0.7);
+        ringMidColor = AppColors.primarySoft.withValues(alpha: 0.4);
         ringInnerColor = const Color(0xFFE4EAF8);
         iconColor = AppColors.primary;
         break;
       case WearableConnectionState.reconnecting:
       case WearableConnectionState.connecting:
-        ringOuterColor = const Color(0xFFFEF3C7).withOpacity(0.7);
-        ringMidColor = const Color(0xFFFEF3C7).withOpacity(0.4);
+        ringOuterColor = const Color(0xFFFEF3C7).withValues(alpha: 0.7);
+        ringMidColor = const Color(0xFFFEF3C7).withValues(alpha: 0.4);
         ringInnerColor = const Color(0xFFFDF6B2);
         iconColor = const Color(0xFFB45309);
         break;
       case WearableConnectionState.disconnected:
-        ringOuterColor = const Color(0xFFFEE2E2).withOpacity(0.5);
-        ringMidColor = const Color(0xFFFEE2E2).withOpacity(0.3);
+        ringOuterColor = const Color(0xFFFEE2E2).withValues(alpha: 0.5);
+        ringMidColor = const Color(0xFFFEE2E2).withValues(alpha: 0.3);
         ringInnerColor = const Color(0xFFF1F5F9);
         iconColor = const Color(0xFF94A3B8);
         break;
@@ -540,7 +540,7 @@ class _DeviceStageCard extends StatelessWidget {
                   height: 168,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: ringOuterColor.withOpacity(outerOpacity),
+                    color: ringOuterColor.withValues(alpha: outerOpacity),
                   ),
                 ),
               ),
@@ -783,13 +783,16 @@ class _ActionButton extends StatelessWidget {
                 color: const Color(0xFFB91C1C),
               ),
               const SizedBox(width: 8),
-              Text(
-                confirmingDisconnect
-                    ? 'Tap again to confirm disconnect'
-                    : 'Disconnect band',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+              Flexible(
+                child: Text(
+                  confirmingDisconnect
+                      ? 'Tap again to confirm disconnect'
+                      : 'Disconnect band',
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
@@ -823,11 +826,14 @@ class _ActionButton extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10),
-              Text(
-                'Reconnecting... Tap to cancel',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
+              Flexible(
+                child: Text(
+                  'Reconnecting... Tap to cancel',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],

@@ -236,3 +236,44 @@ Each agent appends an entry at session end. Read the latest entry first to get c
 - Next task is **T-06: Sustained Stress Notification Display**.
 
 **Suggested commit message:** `T-05: implement connection UI with mock reconnect states`
+
+---
+
+### Session 6 — T-06: Sustained Stress Notification Display (2026-10-15)
+
+**What was done:**
+1. **Bug fixes from T-05:**
+   - Fixed 8 `withOpacity()` deprecation warnings in `band_screen.dart` → migrated to `withValues(alpha:)`.
+   - Fixed 4 `RenderFlex` overflow errors in `home_screen.dart` `_ConnectionBanner` widget by wrapping text in `Flexible` with `TextOverflow.ellipsis`.
+2. **T-06 Implementation (FR-6.2, FR-9.1, D-24):**
+   - Enhanced `HomeProvider` with backend alert lifecycle:
+     - Added `_activeAlerts`, `hasSustainedStressAlert`, `hasLowSpo2Alert` getters.
+     - Added `sustainedStressAlert` and `lowSpo2Alert` accessors for the most recent open alert of each type.
+     - Added `acknowledgeAlert()` method calling `DataRepository.acknowledgeAlert()`.
+     - Alerts now polled every 5 seconds alongside classifications.
+   - Enhanced `MockDataRepository`:
+     - Added `SPO2_LOW` canned alert (historical, already ACK'd).
+     - Added `addAlert()`, `generateSustainedStressAlert()`, `generateLowSpo2Alert()` helpers.
+   - Updated scenario simulation to generate backend alerts when Stress Spike / Low SpO2 scenarios are triggered.
+   - **New Home Screen alert cards:**
+     - `_SustainedStressAlertCard`: Backend-driven alert card with time-since indicator, plain-language wellness message (NFR-4.1), 3 actionable recommendations, and "I Understand" acknowledge button.
+     - `_LowSpo2AlertCard`: Backend-driven SpO2 alert card with safety recommendation and "Acknowledged" button.
+     - Both cards fall back to simple versions when no backend alert exists but live readings indicate issues.
+   - `flutter analyze` — No issues found.
+
+**Files touched:**
+- `lib/features/connection/presentation/band_screen.dart` (withOpacity → withValues)
+- `lib/features/home/presentation/home_screen.dart` (overflow fix + new alert cards)
+- `lib/features/home/state/home_provider.dart` (alert management)
+- `lib/data/repositories/mock_data_repository.dart` (alert generation)
+- `docs/ai/PROGRESS.md`
+- `docs/ai/HANDOFF_LOG.md`
+
+**Decisions made:** D-24 (passive stress UI and tip card, no vibration alerts), D-04 (SpO2 < 95% critical threshold separate from ML stress state).
+**Problems encountered:** None.
+**What the next agent must know:**
+- T-06 is complete. The sustained stress alert card appears by default because the mock has a canned `STRESS_SUSTAINED` alert with status `OPEN`.
+- Acknowledging the alert via "I Understand" calls `acknowledgeAlert()` on the repository and refreshes the alert list.
+- Next task is **T-07: Self-Report Check-in**.
+
+**Suggested commit message:** `T-06: add sustained stress & SpO2 alert cards with backend-driven lifecycle`

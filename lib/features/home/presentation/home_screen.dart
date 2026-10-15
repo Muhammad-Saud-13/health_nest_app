@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../core/config.dart';
 import '../../../core/constants.dart';
 import '../../../core/theme.dart';
+import '../../../data/models/alert.dart';
 import '../../../data/sources/mock_wearable_source.dart';
 import '../state/home_provider.dart';
 
@@ -46,16 +47,36 @@ class HomeScreen extends StatelessWidget {
                     _PrimaryStateCard(home: home),
                     const SizedBox(height: 14),
 
-                    // 4. Passive Tip Card (When Stressed - D-24)
-                    if (home.isStressed && !home.tipDismissed) ...[
-                      _PassiveTipCard(onDismiss: () => home.dismissTip()),
-                      const SizedBox(height: 14),
+                    // 4. Sustained Stress Alert Card (FR-6.2, FR-9.1, D-24)
+                    if (!home.tipDismissed) ...[
+                      if (home.hasSustainedStressAlert) ...[
+                        _SustainedStressAlertCard(
+                          alert: home.sustainedStressAlert!,
+                          onAcknowledge: () => home.acknowledgeAlert(
+                            home.sustainedStressAlert!.id,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                      ] else if (home.isStressed) ...[
+                        _PassiveTipCard(onDismiss: () => home.dismissTip()),
+                        const SizedBox(height: 14),
+                      ],
                     ],
 
-                    // 5. Low SpO2 Warning Card (Separate from ML State - FR-6.3)
-                    if (home.isSpo2Low) ...[
-                      const _LowSpo2Card(),
-                      const SizedBox(height: 14),
+                    // 5. Low SpO2 Alert Card (Separate from ML State - FR-6.3)
+                    if (!home.spo2AlertDismissed) ...[
+                      if (home.hasLowSpo2Alert) ...[
+                        _LowSpo2AlertCard(
+                          alert: home.lowSpo2Alert!,
+                          onAcknowledge: () => home.acknowledgeAlert(
+                            home.lowSpo2Alert!.id,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                      ] else if (home.isSpo2Low) ...[
+                        const _LowSpo2Card(),
+                        const SizedBox(height: 14),
+                      ],
                     ],
 
                     // 6. Two Metric Tiles Side-by-Side (Live HR + SpO2)
@@ -245,15 +266,18 @@ class _ConnectionBanner extends StatelessWidget {
               size: 22,
             ),
             const SizedBox(width: 10),
-            const Text(
-              'Wristband Connected',
-              style: TextStyle(
-                color: Color(0xFF15803D),
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
+            const Flexible(
+              child: Text(
+                'Wristband Connected',
+                style: TextStyle(
+                  color: Color(0xFF15803D),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Spacer(),
+            const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
@@ -308,12 +332,15 @@ class _ConnectionBanner extends StatelessWidget {
               ),
             ),
             SizedBox(width: 12),
-            Text(
-              'Reconnecting to Wristband...',
-              style: TextStyle(
-                color: Color(0xFFB45309),
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
+            Flexible(
+              child: Text(
+                'Reconnecting to Wristband...',
+                style: TextStyle(
+                  color: Color(0xFFB45309),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -747,8 +774,366 @@ class _LowSpo2Card extends StatelessWidget {
 }
 
 // =============================================================================
-// 6. Vitals Grid (FR-7.2, FR-7.5 - Live HR + Live SpO2)
+// 5a. Sustained Stress Alert Card (FR-6.2, FR-9.1, D-24 — Backend-driven)
 // =============================================================================
+
+class _SustainedStressAlertCard extends StatelessWidget {
+  const _SustainedStressAlertCard({
+    required this.alert,
+    required this.onAcknowledge,
+  });
+
+  final Alert alert;
+  final VoidCallback onAcknowledge;
+
+  String _timeSinceAlert() {
+    final diff = DateTime.now().difference(alert.createdAt);
+    if (diff.inHours >= 1) {
+      return '${diff.inHours}h ${diff.inMinutes.remainder(60)}m ago';
+    } else if (diff.inMinutes >= 1) {
+      return '${diff.inMinutes}m ago';
+    }
+    return 'Just now';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF7ED),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFFED7AA), width: 1.5),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1AC2410C),
+            blurRadius: 16,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Alert Header Row
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Warning Icon Badge
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFEDD5),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFFED7AA)),
+                ),
+                child: const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Color(0xFFC2410C),
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Sustained Stress Detected',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF9A3412),
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.schedule_rounded,
+                          size: 13,
+                          color: Color(0xFFB45309),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Alert raised ${_timeSinceAlert()}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFFB45309),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Plain Language Wellness Message (NFR-4.1)
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFFEDEB0)),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Your body has been showing higher stress signals for a while.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF7C2D12),
+                    height: 1.4,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'This is a wellness observation, not a medical diagnosis.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF9A3412),
+                    height: 1.3,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Recommendation Tips
+          const _RecommendationItem(
+            icon: Icons.local_cafe_rounded,
+            text: 'Take a short break if safe to do so',
+          ),
+          const SizedBox(height: 8),
+          const _RecommendationItem(
+            icon: Icons.water_drop_rounded,
+            text: 'Drink some water and hydrate',
+          ),
+          const SizedBox(height: 8),
+          const _RecommendationItem(
+            icon: Icons.air_rounded,
+            text: 'Take a few slow, deep breaths',
+          ),
+          const SizedBox(height: 18),
+
+          // Acknowledge Button
+          SizedBox(
+            height: 52,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
+              onPressed: onAcknowledge,
+              icon: const Icon(Icons.check_circle_outline, size: 20),
+              label: const Text(
+                'I Understand',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Small reusable row for recommendation tips.
+class _RecommendationItem extends StatelessWidget {
+  const _RecommendationItem({
+    required this.icon,
+    required this.text,
+  });
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFEDD5),
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Icon(icon, size: 16, color: const Color(0xFF9A3412)),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 13,
+              color: Color(0xFF7C2D12),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// =============================================================================
+// 5b. Low SpO2 Backend Alert Card (FR-6.3, FR-9.1 — Backend-driven)
+// =============================================================================
+
+class _LowSpo2AlertCard extends StatelessWidget {
+  const _LowSpo2AlertCard({
+    required this.alert,
+    required this.onAcknowledge,
+  });
+
+  final Alert alert;
+  final VoidCallback onAcknowledge;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFEF2F2),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFFECACA), width: 1.5),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14B91C1C),
+            blurRadius: 12,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFEE2E2),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFFECACA)),
+                ),
+                child: const Icon(
+                  Icons.air_rounded,
+                  color: Color(0xFFB91C1C),
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Blood Oxygen Low',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFB91C1C),
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Your SpO2 reading has dropped below 95%.',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF991B1B),
+                        height: 1.3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+
+          // Recommendation
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFFECACA)),
+            ),
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.health_and_safety_rounded,
+                  color: Color(0xFFB91C1C),
+                  size: 20,
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Sit down and rest. Inform your supervisor if you feel lightheaded or unwell.',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF991B1B),
+                      fontWeight: FontWeight.w500,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Acknowledge Button
+          SizedBox(
+            height: 52,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
+              onPressed: onAcknowledge,
+              icon: const Icon(Icons.check_circle_outline, size: 20),
+              label: const Text(
+                'I Understand',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 class _VitalsGrid extends StatelessWidget {
   const _VitalsGrid({required this.home});
