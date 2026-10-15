@@ -57,14 +57,14 @@ Extracted from `Requirements_v1`. Only requirements relevant to the mobile app. 
 
 > Note: FR-7.3 and FR-7.4 were deleted by Saud to avoid disturbing employees during work shift. Stress state is shown passively on app launch/view.
 
-## Self-Report Check-in (FR-8)
+## Self-Report (FR-8)
 
 | ID | Requirement | Pri | Mock? |
 |---|---|---|---|
-| FR-8.1 | Present check-in once per shift | S | 🔌 Mock |
-| FR-8.2 | Allow on-demand check-in | S | Local trigger |
+| FR-8.1 | Present self report once per shift | S | 🔌 Mock |
+| FR-8.2 | Allow on-demand self report | S | Local trigger |
 | FR-8.3 | Collect 3 tap-based answers: feeling, pain, stress level | S | Local |
-| FR-8.4 | Store check-in with employee ID and timestamp | S | 🔌 Mock |
+| FR-8.4 | Store self report with employee ID and timestamp | S | 🔌 Mock |
 
 > FR-8.5 (divergence flagging) is backend/dashboard-side.
 

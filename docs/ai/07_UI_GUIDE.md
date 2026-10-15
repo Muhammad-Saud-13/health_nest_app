@@ -37,7 +37,7 @@ Extracted from Google Stitch mockups in `/ui_design/`. Requirements (`03_REQUIRE
 | **Band Connection** | `ui_design/band_connected/` | FR-3.2, FR-3.6, FR-3.7, FR-3.9 / T-05, T-10 |
 | **24-Hour History** | `ui_design/history_last_24_hours/` | FR-7.6 / T-08 |
 | **Menu & Shift Toggle** | `ui_design/menu_end_shift/` | FR-1.6, Shift Start/End (D-22) / T-03, T-07 |
-| **Self-Report Check-in** | `ui_design/shift_check_in_modal/` | FR-8.1–8.4, NFR-4.3 / T-07 |
+| **Self-Report** | `ui_design/shift_check_in_modal/` | FR-8.1–8.4, NFR-4.3 / T-07 |
 
 ---
 
@@ -84,14 +84,14 @@ Extracted from Google Stitch mockups in `/ui_design/`. Requirements (`03_REQUIRE
 1. **Profile & Station Context Card**: Operator name, Station ID, Active tag.
 2. **Shift Status & Action Card**: Current duration, Start/End Shift button (`52px` height).
 3. **Action List**:
-   - Start Check-in (`fact_check` icon).
+   - Self Report (`fact_check` icon).
    - Wristband Status (`watch` icon).
    - Hydration & Ergonomics / Safety Guide.
    - Log Out (`logout` icon).
 4. **End Shift Modal (Dialog)**: Confirmation modal ("End shift?"), Shift summary metrics, Confirm & Cancel buttons.
 
-### F. Self-Report Check-In Modal (`shift_check_in_modal`)
-1. **Header**: "Quick check-in", "1 of 3 answered" indicator, 3-segment progress bar.
+### F. Self-Report Modal (`shift_check_in_modal`)
+1. **Header**: "Quick self report", "1 of 3 answered" indicator, 3-segment progress bar.
 2. **Question 1 (Feeling)**: Chips (`Fine` | `Tired` | `Unwell`).
 3. **Question 2 (Pain)**: Chips (`No` | `Mild` | `Severe`).
 4. **Question 3 (Stress)**: Chips (`Low` | `Medium` | `High`).

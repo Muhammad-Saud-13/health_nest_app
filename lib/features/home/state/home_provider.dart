@@ -116,6 +116,14 @@ class HomeProvider extends ChangeNotifier {
     return 'Shift active since $displayHour:$minute $period';
   }
 
+  bool _shiftCheckInDone = false;
+  bool get shiftCheckInDone => _shiftCheckInDone;
+
+  void markShiftCheckInDone() {
+    _shiftCheckInDone = true;
+    notifyListeners();
+  }
+
   // ---------------------------------------------------------------------------
   // Passive Tip Card (D-24)
   // ---------------------------------------------------------------------------

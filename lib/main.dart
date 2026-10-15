@@ -56,6 +56,7 @@ class HealthNestApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<DataRepository>.value(value: dataRepository),
         ChangeNotifierProvider<AuthProvider>(
           create: (_) => AuthProvider(authRepository: authRepository)
             ..tryRestoreSession(),

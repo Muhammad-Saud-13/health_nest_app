@@ -19,7 +19,7 @@ Every design decision is recorded here. **Status**: LOCKED = confirmed and final
 | D-13 | **API: POST /sensor-data** → app sends raw/parsed sensor packets | Endpoint TBD. Payload format target is raw PPG / sensor packets. | ASSUMPTION |
 | D-14 | **API: GET /classifications?user_id=X&last=24h** → returns classification history | Endpoint TBD. App polls or receives push for latest state. | ASSUMPTION |
 | D-15 | **API: GET /alerts?user_id=X** → returns active alerts for the employee | Endpoint TBD. | ASSUMPTION |
-| D-16 | **API: POST /checkins** → submits self-report check-in | Endpoint TBD. | ASSUMPTION |
+| D-16 | **API: POST /checkins** → submits self-report | Endpoint TBD. | ASSUMPTION |
 | D-17 | **~Stress alert vibration threshold~** | **SUPERSEDED by D-24**: Active vibration alerts deleted (FR-7.3 deleted). State is shown passively on UI cards. | LOCKED |
 | D-18 | **http** package (not dio) for REST calls | Simpler, fewer dependencies, sufficient for this project. | ASSUMPTION |
 | D-19 | **Raw PPG packet format (~100 Hz)** | Confirmed by Saud: Wristband transmits raw PPG byte streams for HRV feature extraction (RMSSD) on backend. | LOCKED |
@@ -28,3 +28,4 @@ Every design decision is recorded here. **Status**: LOCKED = confirmed and final
 | D-22 | **Build on top of existing scaffold** | Confirmed by Saud: Keep current Flutter scaffold, package name, and platform folders. Clear only demo counter code. | LOCKED |
 | D-23 | **Hybrid HR & State Processing** | Confirmed by Saud: SpO2 displayed directly on app from BLE. Live HR calculated locally via lightweight PPG peak detector for immediate UI feedback. Raw PPG/accel streamed to backend (`POST /sensor-data`), where backend computes accurate HR + HRV (RMSSD) + ML State (Calm/Stressed). | LOCKED |
 | D-24 | **FR-7.3 Vibration Alert deleted — Passive Stress UI** | Confirmed by Saud: Active haptic/vibration alerts deleted to prevent worker disturbance/safety hazards during shifts. App displays state and sustained stress messages passively on app screens when viewed by the user. | LOCKED |
+| D-25 | **Rename "Check-in" → "Self Report" in all UI** | Confirmed by Saud: "Check-in" is confusing because it sounds like starting a shift, making "on-demand check-in" nonsensical mid-shift. All user-facing labels now say "Self Report". Internal code identifiers (class names, file names, route names) retained as `checkin`/`CheckIn` for simplicity. | LOCKED |

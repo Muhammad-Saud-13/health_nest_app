@@ -104,16 +104,45 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
             ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
 
-          // ── Logout ──────────────────────────────────────────────
-          ListTile(
-            leading: const Icon(Icons.logout, color: AppColors.error),
-            title: const Text(
-              'Log Out',
-              style: TextStyle(color: AppColors.error),
+          // ── Actions List (07_UI_GUIDE.md) ───────────────────────────
+          Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.fact_check_rounded, color: AppColors.primary),
+                  title: const Text(
+                    'Self Report',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: const Text('Complete quick 3-question report'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () => Navigator.pushNamed(context, AppConstants.routeCheckIn),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.watch_rounded, color: AppColors.primary),
+                  title: const Text(
+                    'Wristband Status',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: const Text('View connection and battery'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () => Navigator.pushNamed(context, AppConstants.routeBand),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.logout_rounded, color: AppColors.error),
+                  title: const Text(
+                    'Log Out',
+                    style: TextStyle(color: AppColors.error, fontWeight: FontWeight.w600),
+                  ),
+                  onTap: () => _handleLogout(context),
+                ),
+              ],
             ),
-            onTap: () => _handleLogout(context),
           ),
         ],
       ),
