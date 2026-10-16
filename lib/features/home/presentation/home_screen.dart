@@ -171,13 +171,16 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           const SizedBox(width: 10),
-          const Text(
-            AppConfig.appTitle,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-              letterSpacing: -0.3,
+          const Flexible(
+            child: Text(
+              AppConfig.appTitle,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+                letterSpacing: -0.3,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -185,8 +188,10 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         // Scenario Switcher (for demo and manual verification)
         PopupMenuButton<MockScenario>(
-          icon: const Icon(Icons.tune_rounded, color: AppColors.textSecondary),
+          icon: const Icon(Icons.tune_rounded, color: AppColors.textSecondary, size: 22),
           tooltip: 'Simulate Scenario',
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
           onSelected: (scenario) => home.simulateScenario(scenario),
           itemBuilder: (context) => const [
             PopupMenuItem(
@@ -231,15 +236,16 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ],
         ),
+        const SizedBox(width: 4),
         // Profile Avatar Button (Navigates to Settings)
         Padding(
-          padding: const EdgeInsets.only(right: 16.0),
+          padding: const EdgeInsets.only(right: 12.0),
           child: InkWell(
             borderRadius: BorderRadius.circular(20),
             onTap: () => Navigator.pushNamed(context, AppConstants.routeSettings),
             child: Container(
-              width: 36,
-              height: 36,
+              width: 34,
+              height: 34,
               decoration: const BoxDecoration(
                 color: AppColors.primary,
                 shape: BoxShape.circle,
@@ -247,7 +253,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: const Icon(
                 Icons.person,
                 color: Colors.white,
-                size: 20,
+                size: 18,
               ),
             ),
           ),

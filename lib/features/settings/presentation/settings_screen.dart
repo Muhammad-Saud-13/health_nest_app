@@ -134,6 +134,17 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const Divider(height: 1),
                 ListTile(
+                  leading: const Icon(Icons.history_rounded, color: AppColors.primary),
+                  title: const Text(
+                    '24-Hour State History',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: const Text('View Calm and Stressed timeline'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () => Navigator.pushNamed(context, AppConstants.routeHistory),
+                ),
+                const Divider(height: 1),
+                ListTile(
                   leading: const Icon(Icons.logout_rounded, color: AppColors.error),
                   title: const Text(
                     'Log Out',

@@ -277,3 +277,99 @@ Each agent appends an entry at session end. Read the latest entry first to get c
 - Next task is **T-07: Self-Report Check-in**.
 
 **Suggested commit message:** `T-06: add sustained stress & SpO2 alert cards with backend-driven lifecycle`
+
+---
+
+### Session 7 — T-07: Self-Report UI & Flow (2026-10-15)
+
+**Tasks worked on:** T-07
+**What changed:**
+- Implemented 3-question tap-based Self Report modal / screen (Feeling, Pain, Stress) completing under 1 minute without text typing (NFR-4.3).
+- Created `CheckInProvider` and `CheckInScreen` (`lib/features/checkin/`).
+- Renamed all UI references from "Check-in" to "Self Report" per Saud (D-25).
+- Integrated with `MockDataRepository.submitCheckIn` and shift banner.
+- Verified with unit & widget tests in `test/checkin_test.dart`.
+
+**Files touched:**
+- `lib/features/checkin/presentation/checkin_screen.dart`
+- `lib/features/checkin/state/checkin_provider.dart`
+- `test/checkin_test.dart`
+- `docs/ai/PROGRESS.md`
+- `docs/ai/06_DECISIONS.md` (D-25)
+
+---
+
+### Session 8 — T-08: 24-Hour State History (2026-10-15)
+
+**Tasks worked on:** T-08
+**What changed:**
+- Created `HistoryProvider` (`lib/features/history/state/history_provider.dart`) connecting to `MockDataRepository.getRecentClassifications()` and `getActiveShiftSession()`.
+- Implemented `HistoryScreen` (`lib/features/history/presentation/history_screen.dart`) matching `ui_design/history_last_24_hours/code.html` and UI Guide §D:
+  - Shift status badge with live pulsing dot & auto-sync indicator.
+  - Summary Metric Card showing logged records count and percentage Calm badge (e.g. 75% Calm).
+  - Vertical timeline flow with continuous spine connector and nodes for Calm (green check), Stressed (orange warning), Getting ready (amber schedule), and Shift started (blue login badge).
+  - Heart rate metrics, formatted time, and context labels for each entry.
+  - Automatic sync reassurance footer and 4-tab bottom navigation bar.
+- Registered `HistoryProvider` in `MultiProvider` in `lib/main.dart` and added navigation link in `lib/features/settings/presentation/settings_screen.dart`.
+- Fixed disk space bottleneck on C: drive by redirecting temp files to `D:\temp` and cleaning old Flutter temp artifacts.
+- Created `test/history_test.dart` with 5 unit and widget tests (all passing).
+- `flutter analyze` completely clean (0 issues).
+
+**Files touched:**
+- `lib/features/history/state/history_provider.dart` (created)
+- `lib/features/history/presentation/history_screen.dart` (implemented)
+- `lib/main.dart` (registered HistoryProvider in MultiProvider)
+- `lib/features/settings/presentation/settings_screen.dart` (added History tile)
+- `lib/features/checkin/presentation/checkin_screen.dart` (cleaned unused import)
+- `test/connection_screen_test.dart` (added await on provider.connect())
+- `test/history_test.dart` (created 5 tests)
+- `docs/ai/PROGRESS.md` (T-07 and T-08 marked done)
+- `docs/ai/HANDOFF_LOG.md` (updated)
+
+**Decisions made:** None new; followed D-01, D-02, D-03, and UI Guide §D.
+**Problems encountered:** C: drive was at 0.01 GB causing compilation temp write failures; resolved by configuring `D:\temp` and clearing stale temp files.
+**What the next agent must know:**
+- T-08 is fully done and clean (`flutter analyze` has 0 issues, tests pass).
+- Next task is **T-09: Offline Queue and Sync (FR-4.4, FR-4.5, NFR-2.2, NFR-2.4)** using `LocalStore` (sqflite).
+- Run commands with `$env:TEMP="D:\temp"; $env:TMP="D:\temp"` if C: drive space is ever constrained.
+
+**Suggested commit message:** `T-08: implement 24-hour state history timeline and analytics`
+
+---
+
+### Session 9 — T-08 UI Overflow Fixes & T-09: Offline Queue and Sync (2026-10-16)
+
+**Tasks worked on:** T-08 (bugfixes), T-09 (implementation)
+**What changed:**
+- Fixed AppBar `RenderFlex` overflow (91px right and bottom) in `HomeScreen`: wrapped title in `Flexible` widget, made action icons and paddings compact and responsive.
+- Created `ConnectivityService` and `MockConnectivityService` (`lib/data/services/connectivity_service.dart`) with network status simulation (online/offline).
+- Created `OfflineSyncService` (`lib/data/services/offline_sync_service.dart`):
+  - Queues sensor batches into `LocalStore` (sqflite) when network is offline (FR-4.4).
+  - Handles 8-hour retention capacity requirement (NFR-2.2).
+  - Automatically triggers queue sync/drain upon network connectivity restoration (FR-4.5).
+  - Implemented safe malformed packet handling (NFR-2.4): discards truncated/corrupt byte payloads without crashing.
+- Exported services through `lib/data/data.dart` and integrated into `MultiProvider` in `lib/main.dart`.
+- Fixed `pubspec.yaml` `flutter_lints` placement and configuration.
+- Created `test/offline_sync_test.dart` with 18 comprehensive tests covering packet serialization, malformed packet safety, queue/drain cycles, and connectivity mock.
+- Verified test suite: all 59 tests passing, and `flutter analyze` 100% clean (0 issues).
+
+**Files touched:**
+- `lib/features/home/presentation/home_screen.dart` (overflow layout fixes)
+- `lib/data/services/connectivity_service.dart` (created)
+- `lib/data/services/offline_sync_service.dart` (created)
+- `lib/data/data.dart` (barrel exports)
+- `lib/main.dart` (OfflineSyncService DI registration)
+- `pubspec.yaml` (dev_dependencies flutter_lints fix)
+- `test/offline_sync_test.dart` (18 unit & integration tests)
+- `docs/ai/PROGRESS.md` (marked T-08 and T-09 Done)
+- `docs/ai/HANDOFF_LOG.md` (this session log)
+
+**Decisions made:** D-09 (sqflite local store persistence), NFR-2.4 (strict error logging & graceful discard on malformed packet).
+**Problems encountered:** None.
+**What the next agent must know:**
+- Both T-08 and T-09 are completely done.
+- Next task is **T-10: Real BLE Layer** (FR-3.1–3.9, FR-4.1, NFR-7.3, NFR-7.4, NFR-9.1).
+- All 59 tests pass cleanly, `flutter analyze` has 0 issues.
+
+**Suggested commit message:** `T-09: implement offline queue, automatic sync, and malformed packet safety`
+

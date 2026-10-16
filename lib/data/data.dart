@@ -20,3 +20,7 @@ export 'repositories/local_store.dart';
 export 'repositories/mock_auth_repository.dart';
 export 'repositories/mock_data_repository.dart';
 export 'repositories/packet_parser.dart';
+
+// Services
+export 'services/connectivity_service.dart';
+export 'services/offline_sync_service.dart';

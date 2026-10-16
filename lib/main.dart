@@ -6,8 +6,11 @@ import 'core/constants.dart';
 import 'core/theme.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/repositories/data_repository.dart';
+import 'data/repositories/local_store.dart';
 import 'data/repositories/mock_auth_repository.dart';
 import 'data/repositories/mock_data_repository.dart';
+import 'data/services/connectivity_service.dart';
+import 'data/services/offline_sync_service.dart';
 import 'data/sources/mock_wearable_source.dart';
 import 'data/sources/wearable_source.dart';
 import 'features/auth/presentation/forgot_password_screen.dart';
@@ -17,6 +20,7 @@ import 'features/checkin/presentation/checkin_screen.dart';
 import 'features/connection/presentation/band_screen.dart';
 import 'features/connection/state/connection_provider.dart';
 import 'features/history/presentation/history_screen.dart';
+import 'features/history/state/history_provider.dart';
 import 'features/home/presentation/home_screen.dart';
 import 'features/home/state/home_provider.dart';
 import 'features/settings/presentation/settings_screen.dart';
@@ -32,10 +36,19 @@ void main() {
   final DataRepository dataRepository =
       AppConfig.useMocks ? MockDataRepository() : MockDataRepository(); // Real impl in T-11
 
+  // Offline Queue & Sync (T-09: FR-4.4, FR-4.5, NFR-2.2, NFR-2.4)
+  final LocalStore localStore = SqfliteLocalStore();
+  final ConnectivityService connectivityService = MockConnectivityService();
+  final OfflineSyncService offlineSyncService = OfflineSyncService(
+    localStore: localStore,
+    connectivityService: connectivityService,
+  );
+
   runApp(HealthNestApp(
     authRepository: authRepository,
     wearableSource: wearableSource,
     dataRepository: dataRepository,
+    offlineSyncService: offlineSyncService,
   ));
 }
 
@@ -45,12 +58,14 @@ class HealthNestApp extends StatelessWidget {
     required this.authRepository,
     WearableSource? wearableSource,
     DataRepository? dataRepository,
+    this.offlineSyncService,
   })  : wearableSource = wearableSource ?? MockWearableSource(),
         dataRepository = dataRepository ?? MockDataRepository();
 
   final AuthRepository authRepository;
   final WearableSource wearableSource;
   final DataRepository dataRepository;
+  final OfflineSyncService? offlineSyncService;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +88,16 @@ class HealthNestApp extends StatelessWidget {
             wearableSource: wearableSource,
           ),
         ),
+        ChangeNotifierProvider<HistoryProvider>(
+          create: (context) => HistoryProvider(
+            dataRepository: dataRepository,
+            userId: context.read<AuthProvider>().currentUser?.id ?? 1,
+          )..loadHistory(),
+        ),
+        if (offlineSyncService != null)
+          ChangeNotifierProvider<OfflineSyncService>.value(
+            value: offlineSyncService!..init(),
+          ),
       ],
       child: MaterialApp(
         title: AppConfig.appTitle,

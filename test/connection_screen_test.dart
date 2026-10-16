@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healtnest_app/core/constants.dart';
@@ -150,7 +152,7 @@ void main() {
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(buildTestWidget());
-      provider.connect();
+      unawaited(provider.connect());
       await tester.pump(const Duration(milliseconds: 700));
 
       // Connected badge

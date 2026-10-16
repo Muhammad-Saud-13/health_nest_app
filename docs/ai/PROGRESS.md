@@ -8,10 +8,13 @@
 - [x] **T-04: Home Screen** (Completed 2026-10-11)
 - [x] **T-05: Connection UI** (Completed 2026-10-12)
 - [x] **T-06: Sustained Stress Notification Display** (Completed 2026-10-15)
+- [x] **T-07: Self-Report UI & Flow** (Completed 2026-10-15)
+- [x] **T-08: 24-Hour State History** (Completed 2026-10-16)
+- [x] **T-09: Offline Queue and Sync** (Completed 2026-10-16)
 
 ## In Progress
     
-_(none currently - ready for T-07)_
+_(none currently - ready for T-10: Real BLE Layer)_
 
 ## Next (ordered)
 
@@ -118,7 +121,7 @@ _(none currently - ready for T-07)_
 - Triggers once per shift (mock) + available on-demand from menu
 - Submission stored via `MockDataRepository`
 - `flutter analyze` clean
-**Status:** not started
+**Status:** Done
 
 ---
 
@@ -130,7 +133,7 @@ _(none currently - ready for T-07)_
 - Each entry shows timestamp, state (Calm/Stressed) with colour + icon + text
 - Data from `MockDataRepository`
 - `flutter analyze` clean
-**Status:** not started
+**Status:** Done
 
 ---
 
@@ -143,7 +146,7 @@ _(none currently - ready for T-07)_
 - Sync to backend triggered when connectivity restored (mock: simulated)
 - Malformed packets discarded without crashing (NFR-2.4) — tested with garbage input
 - `flutter analyze` clean
-**Status:** not started
+**Status:** Done
 
 ---
 
