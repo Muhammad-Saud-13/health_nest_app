@@ -87,9 +87,8 @@ class HomeScreen extends StatelessWidget {
                       if (home.hasLowSpo2Alert) ...[
                         _LowSpo2AlertCard(
                           alert: home.lowSpo2Alert!,
-                          onAcknowledge: () => home.acknowledgeAlert(
-                            home.lowSpo2Alert!.id,
-                          ),
+                          onAcknowledge: () =>
+                              home.acknowledgeAlert(home.lowSpo2Alert!.id),
                         ),
                         const SizedBox(height: 14),
                       ] else if (home.isSpo2Low) ...[
@@ -177,7 +176,11 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         // Scenario Switcher (for demo and manual verification)
         PopupMenuButton<MockScenario>(
-          icon: const Icon(Icons.tune_rounded, color: AppColors.textSecondary, size: 22),
+          icon: const Icon(
+            Icons.tune_rounded,
+            color: AppColors.textSecondary,
+            size: 22,
+          ),
           tooltip: 'Simulate Scenario',
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
@@ -187,7 +190,11 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               value: MockScenario.calm,
               child: Row(
                 children: [
-                  Icon(Icons.check_circle, color: AppColors.stateCalm, size: 20),
+                  Icon(
+                    Icons.check_circle,
+                    color: AppColors.stateCalm,
+                    size: 20,
+                  ),
                   SizedBox(width: 8),
                   Text('Scenario: Calm'),
                 ],
@@ -231,7 +238,8 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 12.0),
           child: InkWell(
             borderRadius: BorderRadius.circular(20),
-            onTap: () => Navigator.pushNamed(context, AppConstants.routeSettings),
+            onTap: () =>
+                Navigator.pushNamed(context, AppConstants.routeSettings),
             child: Container(
               width: 34,
               height: 34,
@@ -239,11 +247,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 18,
-              ),
+              child: const Icon(Icons.person, color: Colors.white, size: 18),
             ),
           ),
         ),
@@ -273,11 +277,7 @@ class _ConnectionBanner extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(
-              Icons.check_circle,
-              color: Color(0xFF15803D),
-              size: 22,
-            ),
+            const Icon(Icons.check_circle, color: Color(0xFF15803D), size: 22),
             const SizedBox(width: 10),
             const Flexible(
               child: Text(
@@ -374,11 +374,7 @@ class _ConnectionBanner extends StatelessWidget {
         ),
         child: const Row(
           children: [
-            Icon(
-              Icons.link_off_rounded,
-              color: Color(0xFFB91C1C),
-              size: 22,
-            ),
+            Icon(Icons.link_off_rounded, color: Color(0xFFB91C1C), size: 22),
             SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -390,11 +386,7 @@ class _ConnectionBanner extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(
-              Icons.refresh_rounded,
-              color: Color(0xFFB91C1C),
-              size: 20,
-            ),
+            Icon(Icons.refresh_rounded, color: Color(0xFFB91C1C), size: 20),
           ],
         ),
       ),
@@ -407,10 +399,7 @@ class _ConnectionBanner extends StatelessWidget {
 // =============================================================================
 
 class _ShiftStatusLine extends StatelessWidget {
-  const _ShiftStatusLine({
-    required this.shiftText,
-    this.onCheckInTap,
-  });
+  const _ShiftStatusLine({required this.shiftText, this.onCheckInTap});
 
   final String shiftText;
   final VoidCallback? onCheckInTap;
@@ -548,7 +537,11 @@ class _ShiftCheckInPromptCard extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           IconButton(
-            icon: const Icon(Icons.close_rounded, size: 18, color: Color(0xFF6B7280)),
+            icon: const Icon(
+              Icons.close_rounded,
+              size: 18,
+              color: Color(0xFF6B7280),
+            ),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             onPressed: onDismiss,
@@ -644,24 +637,27 @@ class _PrimaryStateCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(999),
               border: Border.all(color: const Color(0xFFBBF7D0)),
             ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.sentiment_satisfied_rounded,
-                  color: Color(0xFF15803D),
-                  size: 16,
-                ),
-                SizedBox(width: 6),
-                Text(
-                  'Optimal Vitals Zone',
-                  style: TextStyle(
+            child: const FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.sentiment_satisfied_rounded,
                     color: Color(0xFF15803D),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                    size: 16,
                   ),
-                ),
-              ],
+                  SizedBox(width: 6),
+                  Text(
+                    'Optimal Vitals Zone',
+                    style: TextStyle(
+                      color: Color(0xFF15803D),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -807,10 +803,7 @@ class _PassiveTipCard extends StatelessWidget {
                     SizedBox(height: 4),
                     Text(
                       'Take a short break and drink some water.',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF7C2D12),
-                      ),
+                      style: TextStyle(fontSize: 13, color: Color(0xFF7C2D12)),
                     ),
                   ],
                 ),
@@ -833,10 +826,7 @@ class _PassiveTipCard extends StatelessWidget {
               icon: const Icon(Icons.check, size: 20),
               label: const Text(
                 'Got it',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -868,11 +858,7 @@ class _LowSpo2Card extends StatelessWidget {
           CircleAvatar(
             radius: 18,
             backgroundColor: Color(0xFFFEE2E2),
-            child: Icon(
-              Icons.air_rounded,
-              color: Color(0xFFB91C1C),
-              size: 20,
-            ),
+            child: Icon(Icons.air_rounded, color: Color(0xFFB91C1C), size: 20),
           ),
           SizedBox(width: 12),
           Expanded(
@@ -1074,10 +1060,7 @@ class _SustainedStressAlertCard extends StatelessWidget {
               icon: const Icon(Icons.check_circle_outline, size: 20),
               label: const Text(
                 'I Understand',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -1089,10 +1072,7 @@ class _SustainedStressAlertCard extends StatelessWidget {
 
 /// Small reusable row for recommendation tips.
 class _RecommendationItem extends StatelessWidget {
-  const _RecommendationItem({
-    required this.icon,
-    required this.text,
-  });
+  const _RecommendationItem({required this.icon, required this.text});
 
   final IconData icon;
   final String text;
@@ -1131,10 +1111,7 @@ class _RecommendationItem extends StatelessWidget {
 // =============================================================================
 
 class _LowSpo2AlertCard extends StatelessWidget {
-  const _LowSpo2AlertCard({
-    required this.alert,
-    required this.onAcknowledge,
-  });
+  const _LowSpo2AlertCard({required this.alert, required this.onAcknowledge});
 
   final Alert alert;
   final VoidCallback onAcknowledge;
@@ -1253,10 +1230,7 @@ class _LowSpo2AlertCard extends StatelessWidget {
               icon: const Icon(Icons.check_circle_outline, size: 20),
               label: const Text(
                 'I Understand',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -1266,7 +1240,6 @@ class _LowSpo2AlertCard extends StatelessWidget {
   }
 }
 
-
 class _VitalsGrid extends StatelessWidget {
   const _VitalsGrid({required this.home});
 
@@ -1274,7 +1247,9 @@ class _VitalsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hrValue = home.heartRate > 0 ? home.heartRate.round().toString() : '--';
+    final hrValue = home.heartRate > 0
+        ? home.heartRate.round().toString()
+        : '--';
     final spo2Value = home.spo2 > 0 ? home.spo2.round().toString() : '--';
     final isHrElevated = home.heartRate > 100;
     final isSpo2Low = home.isSpo2Low;
@@ -1526,10 +1501,7 @@ class _VitalsGrid extends StatelessWidget {
 // =============================================================================
 
 class _BottomNavBar extends StatelessWidget {
-  const _BottomNavBar({
-    required this.currentIndex,
-    required this.onTap,
-  });
+  const _BottomNavBar({required this.currentIndex, required this.onTap});
 
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -1539,9 +1511,7 @@ class _BottomNavBar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Color(0xFFF8FAFD),
-        border: Border(
-          top: BorderSide(color: Color(0xFFD8DFEB), width: 1),
-        ),
+        border: Border(top: BorderSide(color: Color(0xFFD8DFEB), width: 1)),
       ),
       child: SafeArea(
         top: false,

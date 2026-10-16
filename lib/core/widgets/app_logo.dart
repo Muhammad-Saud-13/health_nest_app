@@ -44,11 +44,7 @@ class HealthNestLogo extends StatelessWidget {
 
     Widget clipped = ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: imageWidget,
-      ),
+      child: SizedBox(width: size, height: size, child: imageWidget),
     );
 
     if (hasShadow) {
@@ -59,7 +55,7 @@ class HealthNestLogo extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.18),
+              color: AppColors.primary.withValues(alpha: 0.1),
               blurRadius: 18,
               offset: const Offset(0, 6),
             ),
