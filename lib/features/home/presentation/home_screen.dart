@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../core/config.dart';
 import '../../../core/constants.dart';
 import '../../../core/theme.dart';
+import '../../../core/widgets/app_logo.dart';
 import '../../../data/models/alert.dart';
 import '../../../data/sources/mock_wearable_source.dart';
 import '../state/home_provider.dart';
@@ -155,19 +156,11 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       centerTitle: false,
       titleSpacing: 20,
-      title: Row(
+      title: const Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              'assets/HealthNest_App_Icon.png',
-              width: 34,
-              height: 34,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(width: 10),
-          const Flexible(
+          HealthNestLogo(size: 34, borderRadius: 8),
+          SizedBox(width: 10),
+          Flexible(
             child: Text(
               AppConfig.appTitle,
               style: TextStyle(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants.dart';
 import '../../../core/theme.dart';
+import '../../../core/widgets/app_logo.dart';
 import '../../../data/models/classification.dart';
 import '../../auth/state/auth_provider.dart';
 import '../state/history_provider.dart';
@@ -114,19 +115,11 @@ class _HistoryAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       centerTitle: false,
       titleSpacing: 20,
-      title: Row(
+      title: const Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              'assets/HealthNest_App_Icon.png',
-              width: 34,
-              height: 34,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(width: 10),
-          const Text(
+          HealthNestLogo(size: 34, borderRadius: 8),
+          SizedBox(width: 10),
+          Text(
             'HealthNest',
             style: TextStyle(
               fontSize: 18,
@@ -135,8 +128,8 @@ class _HistoryAppBar extends StatelessWidget implements PreferredSizeWidget {
               letterSpacing: -0.3,
             ),
           ),
-          const SizedBox(width: 6),
-          const Text(
+          SizedBox(width: 6),
+          Text(
             '| History',
             style: TextStyle(
               fontSize: 14,

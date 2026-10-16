@@ -1,11 +1,11 @@
 {
-    "name": "healtnest_app",
-    "short_name": "healtnest_app",
+    "name": "HealthNest",
+    "short_name": "HealthNest",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#F1F3F8",
     "theme_color": "#263E9F",
-    "description": "A new Flutter project.",
+    "description": "HealthNest - Employee Wellbeing Monitoring",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

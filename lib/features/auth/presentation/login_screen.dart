@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants.dart';
 import '../../../core/theme.dart';
+import '../../../core/widgets/app_logo.dart';
 import '../state/auth_provider.dart';
 
 /// Login screen with email + password fields.
@@ -57,29 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // ── App Logo & Title ──────────────────────────────────
-                  Center(
-                    child: Container(
-                      width: 84,
-                      height: 84,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.15),
-                            blurRadius: 16,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          'assets/HealthNest_App_Icon.png',
-                          width: 84,
-                          height: 84,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                  const Center(
+                    child: HealthNestLogo(
+                      size: 84,
+                      borderRadius: 20,
+                      hasShadow: true,
                     ),
                   ),
                   const SizedBox(height: 16),
